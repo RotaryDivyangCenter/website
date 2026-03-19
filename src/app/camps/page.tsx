@@ -37,7 +37,7 @@ export default function CampsPage() {
                         Our Camps — Reaching the Unreached
                     </h1>
                     <p className="mt-4 text-[16px] max-w-lg mx-auto" style={{ color: 'rgba(255,255,255,0.75)' }}>
-                        Since 2014, we&apos;ve conducted prosthetic fitment camps across Thane and Maharashtra.
+                        Since 2019, we&apos;ve conducted prosthetic fitment camps across Thane and Maharashtra.
                     </p>
                 </FadeUp>
             </section>
@@ -113,7 +113,7 @@ export default function CampsPage() {
                             <Link href="/donate" className="btn-donate">
                                 <HandHeart size={18} /> Donate for a Camp
                             </Link>
-                            <Link href="/contact" className="btn-ghost">
+                            <Link href="/contact" className="btn-primary">
                                 Request a Camp
                             </Link>
                         </div>

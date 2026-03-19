@@ -12,7 +12,7 @@ function FadeUp({ children, delay = 0, className = '' }: { children: React.React
 }
 
 const timeline = [
-    { year: '2014', title: 'Center Founded', desc: 'Rotary Divyang Center established under Rotary Club of New Kalyan, Dist. 3142.' },
+    { year: '2019', title: 'Center Founded', desc: 'Rotary Divyang Center established under Rotary Club of New Kalyan, Dist. 3142.' },
     { year: '2016', title: 'First Major Camp', desc: 'First large-scale camp conducted — over 50 prosthetic limbs provided to beneficiaries.' },
     { year: '2019', title: 'LN4 Hi-Tech Limbs', desc: 'Introduction of LN4 Jaipur Foot technology and hi-tech prosthetic hands in collaboration with international partners.' },
     { year: '2022', title: '500+ Limbs Milestone', desc: 'Crossed the 500 prosthetic limbs milestone — a landmark moment for the center.' },
@@ -107,32 +107,8 @@ export default function AboutPage() {
                 </div>
             </section>
 
-            {/* Acknowledgements */}
-            <section className="py-20" style={{ background: '#F7F4EF' }}>
-                <div className="max-w-[1200px] mx-auto px-6">
-                    <FadeUp className="text-center mb-16 max-w-2xl mx-auto">
-                        <span className="section-label mb-5 justify-center">Gratitude</span>
-                        <h2 className="text-[36px] font-bold leading-tight" style={{ color: '#1A1A2E' }}>International Acknowledgements</h2>
-                    </FadeUp>
-                    <div className="grid sm:grid-cols-2 lg:grid-cols-4 border-t border-l border-[#E2DDD6]">
-                        {acknowledgements.map((ack, i) => (
-                            <FadeUp key={ack.name} delay={i * 0.08}>
-                                <div className="holo-card p-8 h-full text-center border-r border-b border-[#E2DDD6] bg-[#F7F4EF] transition-colors duration-500 group">
-                                    <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-6 bg-[#fff] border border-[#E2DDD6] text-[#1B3A8C] transition-transform duration-500 group-hover:-translate-y-1">
-                                        {ack.icon}
-                                    </div>
-                                    <h3 className="font-bold text-[16px] mb-2" style={{ color: '#1A1A2E' }}>{ack.name}</h3>
-                                    <p className="text-[12px] uppercase tracking-widest font-semibold mb-4" style={{ color: '#2AA8C4' }}>{ack.country}</p>
-                                    <p className="text-[14px] leading-relaxed" style={{ color: '#5C6475' }}>{ack.desc}</p>
-                                </div>
-                            </FadeUp>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
             {/* Photo + Details */}
-            <section className="py-20" style={{ background: '#fff' }}>
+            <section className="py-20" style={{ background: '#F7F4EF' }}>
                 <div className="max-w-[1200px] mx-auto px-6">
                     <div className="grid lg:grid-cols-2 gap-12 items-center">
                         <FadeUp>
@@ -153,7 +129,7 @@ export default function AboutPage() {
                                     [<Bookmark size={18} className="text-[#1B3A8C]" key="3" />, 'Club', 'Rotary Club of New Kalyan'],
                                     [<Globe size={18} className="text-[#1B3A8C]" key="4" />, 'District', 'Rotary International District 3142'],
                                     [<IdCard size={18} className="text-[#1B3A8C]" key="5" />, 'Club ID', '90509'],
-                                    [<Calendar size={18} className="text-[#1B3A8C]" key="6" />, 'Founded', '2014'],
+                                    [<Calendar size={18} className="text-[#1B3A8C]" key="6" />, 'Founded', '2019'],
                                 ].map(([icon, label, value]) => (
                                     <li key={String(label)} className="flex items-start gap-3">
                                         <span className="text-lg flex-shrink-0">{icon}</span>

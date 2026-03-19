@@ -96,7 +96,8 @@ export default function ContactPage() {
                                         </div>
                                         <div>
                                             <p className="font-semibold text-[14px] mb-0.5" style={{ color: '#1A1A2E' }}>Phone</p>
-                                            <a href="tel:+919876543210" className="text-[14px] hover:underline" style={{ color: '#2AA8C4' }}>+91 98765 43210</a>
+                                            <a href="tel:+919820562796" className="text-[14px] hover:underline" style={{ color: '#2AA8C4' }}>+91 9820562796 <br/></a>
+                                            <a href="tel:+919819323947" className="text-[14px] hover:underline" style={{ color: '#2AA8C4' }}>+91 9819323947</a>
                                         </div>
                                     </li>
                                     <li className="flex items-start gap-4">
@@ -105,8 +106,8 @@ export default function ContactPage() {
                                         </div>
                                         <div>
                                             <p className="font-semibold text-[14px] mb-0.5" style={{ color: '#1A1A2E' }}>Email</p>
-                                            <a href="mailto:info@rotarydivyangcenter.org" className="text-[14px] hover:underline" style={{ color: '#2AA8C4' }}>
-                                                info@rotarydivyangcenter.org
+                                            <a href="mailto:rcnewkalyan@gmail.com" className="text-[14px] hover:underline" style={{ color: '#2AA8C4' }}>
+                                                rcnewkalyan@gmail.com
                                             </a>
                                         </div>
                                     </li>

@@ -115,32 +115,6 @@ export default function PartnersPage() {
                 </div>
             </section>
 
-            {/* International Partners */}
-            <section className="py-20" style={{ background: '#fff' }}>
-                <div className="max-w-[1000px] mx-auto px-6">
-                    <FadeUp className="text-center mb-12">
-                        <span className="section-label block mb-3">International</span>
-                        <h2 className="text-[32px] font-bold" style={{ color: '#1A1A2E' }}>Global Acknowledgements</h2>
-                    </FadeUp>
-                    <div className="grid sm:grid-cols-2 gap-6">
-                        {intl.map((p, i) => (
-                            <FadeUp key={p.name} delay={i * 0.1}>
-                                <div className="holo-card group p-6 flex gap-5 border border-[#E2DDD6] bg-[#fff]">
-                                    <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-transform duration-500 group-hover:-translate-y-1" style={{ background: '#EBF4FF' }}>
-                                        <Users size={22} style={{ color: '#1B3A8C' }} />
-                                    </div>
-                                    <div>
-                                        <h3 className="font-bold text-[16px] mb-0.5 transition-colors duration-300 group-hover:text-[#1B3A8C]" style={{ color: '#1A1A2E' }}>{p.name}</h3>
-                                        <p className="text-[12px] font-semibold mb-2" style={{ color: '#2AA8C4' }}>{p.country}</p>
-                                        <p className="text-[13px] leading-relaxed" style={{ color: '#5C6475' }}>{p.desc}</p>
-                                    </div>
-                                </div>
-                            </FadeUp>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
             {/* Become a Partner CTA */}
             <section className="py-20" style={{ background: 'linear-gradient(135deg, #1B3A8C 0%, #7B2D8B 100%)' }}>
                 <div className="max-w-[700px] mx-auto px-6 text-center">

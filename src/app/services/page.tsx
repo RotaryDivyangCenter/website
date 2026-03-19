@@ -124,7 +124,7 @@ export default function ServicesPage() {
                         ].map((item, i) => (
                             <FadeUp key={item.step} delay={i * 0.08}>
                                 <div className="holo-card p-8 text-center relative h-full bg-[#fff] border border-[#E2DDD6] group">
-                                    <div className="text-[48px] font-extrabold mb-6 transition-colors duration-500 group-hover:text-[#17458F]" style={{ color: 'rgba(27,58,140,0.12)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{item.step}</div>
+                                    <div className="mb-6 text-[48px] font-extrabold leading-none text-[rgba(27,58,140,0.12)] transition-colors duration-500 group-hover:text-[#17458F]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{item.step}</div>
                                     <h3 className="font-bold text-[18px] mb-3" style={{ color: '#1A1A2E' }}>{item.title}</h3>
                                     <p className="text-[15px] leading-[1.75]" style={{ color: '#5C6475' }}>{item.desc}</p>
 

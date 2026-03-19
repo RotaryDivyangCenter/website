@@ -29,8 +29,7 @@ export default function DonatePage() {
         <div>
             {/* Hero */}
             <section
-                className="py-28 text-center"
-                style={{ background: 'linear-gradient(135deg, #1B3A8C 0%, #7B2D8B 100%)' }}
+                className="py-28 text-center" style={{ background: '#1B3A8C' }}
             >
                 <FadeUp>
                     <p className="section-label mb-3" style={{ color: 'rgba(255,255,255,0.6)' }}>GIVE BACK</p>

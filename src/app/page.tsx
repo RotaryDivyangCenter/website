@@ -76,15 +76,6 @@ const csrPartners = [
   { name: 'Legrand', logo: '/legrand.png' },
 ];
 
-const galleryItems = [
-  { src: '/1.jpg', alt: 'Beneficiary during prosthetic support session', h: 'h-[290px]' },
-  { src: '/2.jpg', alt: 'Clinical fitting and evaluation at center', h: 'h-[220px]' },
-  { src: '/3.jpg', alt: 'Outreach camp volunteer with beneficiary', h: 'h-[260px]' },
-  { src: '/4.jpg', alt: 'Community prosthetic camp and checkup', h: 'h-[330px]' },
-  { src: '/2.jpg', alt: 'Workshop preparation for prosthetic fitting', h: 'h-[240px]' },
-  { src: '/1.jpg', alt: 'Post fitting mobility guidance', h: 'h-[300px]' },
-];
-
 export default function HomePage() {
   const [lightboxIndex, setLightboxIndex] = useState(-1);
 
@@ -97,7 +88,7 @@ export default function HomePage() {
         <div className="container-shell grid lg:grid-cols-[1.1fr_0.9fr] gap-10 items-center">
           <FadeUp>
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase bg-[#ffffff] border border-[#d8e3ee] text-[#2C5AA0]">
-              Rotary Divyang Center
+              Rotary Divyang Center · Giving Hope, Giving Smile
             </div>
             <h1 className="mt-5 text-[2.2rem] sm:text-[3.2rem] leading-[1.12] font-bold text-[#17458F] font-[var(--font-jakarta)]">
               Restoring Steps.
@@ -119,7 +110,7 @@ export default function HomePage() {
             <div className="rounded-2xl border border-[#d8e3ee] bg-white p-4 sm:p-5 shadow-[0_18px_40px_rgba(21,58,117,0.08)]">
               <div className="mb-3 flex items-center gap-2.5">
                 <Image src="/logo.jpg" alt="Rotary Divyang Center logo" width={36} height={36} className="rounded-full" />
-                <p className="text-sm font-semibold text-[#17458F]">Serving with dignity since 2014</p>
+                <p className="text-sm font-semibold text-[#17458F]">Serving with dignity since 2019</p>
               </div>
               <Image
                 src="/4.jpg"
@@ -166,7 +157,7 @@ export default function HomePage() {
               const Icon = service.icon;
               return (
                 <FadeUp key={service.title} delay={index * 0.08}>
-                  <article className="border-b border-[#d8e3ee] pb-6">
+                  <article className="group border-b border-[#d8e3ee] pb-6">
                     <div className="h-12 w-12 rounded-md bg-[#EDF3F8] text-[#2CA7B0] flex items-center justify-center">
                       <Icon size={22} aria-hidden="true" />
                     </div>
@@ -207,8 +198,48 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      
+            <section className="py-16 sm:py-20" style={{ background: '#F6F9FC' }}>
+              <div className="container-shell">
+                <FadeUp>
+                  <div className="mb-12 max-w-2xl sm:mb-16">
+                    <p className="section-label">How It Works</p>
+                    <h2 className="mt-4 text-[1.9rem] sm:text-[2.4rem] leading-tight font-bold text-[#17458F] font-[var(--font-jakarta)]">
+                      How to Get a Free Prosthetic Limb
+                    </h2>
+                    <p className="mt-4 text-[15px] leading-[1.75] text-[#5C6475]">
+                      The center is open every Saturday and Sunday from 10:00 AM to 1:00 PM.
+                    </p>
+                  </div>
+                </FadeUp>
 
-      <section className="py-16 sm:py-20" style={{ background: '#F6F9FC' }} id="partners">
+                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-8 sm:gap-y-10">
+                  {[
+                    { step: '01', title: 'Visit on Sat/Sun', desc: 'The patient visits the center during 10:00 AM to 1:00 PM on Saturday or Sunday.' },
+                    { step: '02', title: 'Measurement at Center', desc: 'Our team records detailed limb measurements and clinical requirements the same day.' },
+                    { step: '03', title: 'Return Next Week', desc: 'On the exact same day next week, the patient returns for the prepared custom limb.' },
+                    { step: '04', title: 'No-Cost Fitment', desc: 'The customized limb is fitted and guided at zero cost to the patient.' },
+                  ].map((item, i) => (
+                    <FadeUp key={item.step} delay={i * 0.08}>
+                      <div className="holo-card group relative h-full border border-[#d8e3ee] bg-white p-7 text-center transition-colors duration-300 hover:border-[#17458F] sm:p-8">
+                        <div
+                          className="mb-6 text-[48px] font-extrabold leading-none text-[rgba(27,58,140,0.12)] transition-colors duration-500 group-hover:text-[#17458F]"
+                          style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                        >
+                          {item.step}
+                        </div>
+                        <h3 className="mb-3 text-[18px] font-bold text-[#1A1A2E]">{item.title}</h3>
+                        <p className="text-[15px] leading-[1.75] text-[#5C6475]">{item.desc}</p>
+
+                        {i < 3 && <div className="absolute -right-4 top-1/2 z-10 hidden h-[1px] w-8 bg-[#d8e3ee] lg:block" />}
+                      </div>
+                    </FadeUp>
+                  ))}
+                </div>
+              </div>
+            </section>
+
+      <section className="py-16 sm:py-20 bg-white" id="partners">
         <div className="container-shell">
           <FadeUp>
             <p className="section-label">CSR Partners</p>
@@ -250,7 +281,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="py-16 sm:py-20 bg-white" id="camps">
+      <section className="py-16 sm:py-20" style={{ background: '#F6F9FC' }} id="camps">
         <div className="container-shell grid md:grid-cols-[0.95fr_1.05fr] gap-8 sm:gap-10 items-start">
           <FadeUp>
             <p className="section-label">Camps and Outreach</p>
@@ -282,47 +313,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="py-16 sm:py-20" style={{ background: '#F6F9FC' }} id="gallery">
-        <div className="container-shell">
-          <FadeUp>
-            <p className="section-label">Gallery</p>
-            <h2 className="mt-4 text-[1.9rem] sm:text-[2.4rem] leading-tight font-bold text-[#17458F] font-[var(--font-jakarta)]">
-              Moments from the center and outreach camps
-            </h2>
-          </FadeUp>
-
-          <div className="mt-10 columns-1 sm:columns-2 lg:columns-3 gap-4 [column-fill:_balance]">
-            {galleryItems.map((item, idx) => (
-              <FadeUp key={`${item.src}-${idx}`} delay={idx * 0.03}>
-                <figure
-                  className={`relative mb-4 break-inside-avoid overflow-hidden ${item.h} cursor-pointer group`}
-                  onClick={() => setLightboxIndex(idx)}
-                >
-                  <Image
-                    src={item.src}
-                    alt={item.alt}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    loading="lazy"
-                  />
-                  <div
-                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    style={{ background: 'rgba(27,58,140,0.26)' }}
-                  />
-                </figure>
-              </FadeUp>
-            ))}
-          </div>
-          <Lightbox
-            open={lightboxIndex >= 0}
-            index={lightboxIndex}
-            close={() => setLightboxIndex(-1)}
-            slides={galleryItems.map((item) => ({ src: item.src, alt: item.alt }))}
-          />
-        </div>
-      </section>
-
       <section className="py-16 sm:py-20" style={{ background: '#17458F' }} id="donate">
         <div className="container-shell text-white">
           <FadeUp>
@@ -335,8 +325,8 @@ export default function HomePage() {
               Razorpay and directly strengthen someone&apos;s independence.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/donate" className="btn-donate" aria-label="Donate with Razorpay">
-                Donate with Razorpay
+              <Link href="/donate" className="btn-donate" aria-label="Donate">
+                <HandHeart size={18} /> Donate
               </Link>
               <Link href="/donate" className="btn-secondary border-white text-white bg-transparent hover:bg-white hover:text-[#17458F]">
                 See donation impact
@@ -358,7 +348,10 @@ export default function HomePage() {
               collaboration.
             </p>
             <p className="mt-5 inline-flex items-center gap-2 text-[#1A1A1A] font-medium">
-              <MapPin size={16} color="#2CA7B0" /> 64VH+CG, Kalyan, Maharashtra
+              <MapPin size={16} color="#2CA7B0" /> Rotary Divyang Center<br />
+              Sabnis Bungalow, Sahajanand Chowk,<br />
+              Opp. Katkar Hospital, Tilak Chowk,<br />
+              Kalyan, Maharashtra 421301, India
             </p>
           </FadeUp>
 
