@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { Mail, MapPin, Phone } from 'lucide-react';
+import { HandHeart, Mail, MapPin, Phone } from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -13,12 +13,29 @@ export default function Footer() {
             </div>
             <div>
               <p className="font-bold text-[#17458F] font-[var(--font-jakarta)] text-[0.98rem]">Rotary Divyang Center</p>
-              <p className="text-[0.78rem] text-[#7C8A97]">Rotary Club of New Kalyan</p>
+              <p className="text-[0.80rem] text-[#7C8A97]">Giving Hope, Giving Smile</p>
             </div>
           </div>
           <p className="text-sm leading-relaxed text-[#5A5A5A]">
             Restoring mobility and dignity through free prosthetic support, camps, and long-term rehabilitation assistance.
           </p>
+          <a
+            href="https://rcnewkalyan.rotaryindia.org"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Visit Rotary Club of New Kalyan website"
+            className="mt-5 inline-block"
+          >
+            <span className="relative block h-14 w-44">
+              <Image
+                src="/rcnewkalyan_no_bg.png"
+                alt="Rotary Club of New Kalyan logo"
+                fill
+                sizes="176px"
+                className="object-contain"
+              />
+            </span>
+          </a>
         </div>
 
         <div>
@@ -50,14 +67,17 @@ export default function Footer() {
             </li>
             <li className="flex items-start gap-2.5">
               <Phone size={16} className="mt-0.5 text-[#2CA7B0]" />
-              <a href="tel:+919876543210" className="hover:text-[#17458F]">
-                +91 98765 43210
+              <a href="tel:+919820562796" className="hover:text-[#17458F]">
+                +91 9820562796
+              </a>
+              <a href="tel:+919819323947" className="hover:text-[#17458F]">
+                +91 9819323947
               </a>
             </li>
             <li className="flex items-start gap-2.5">
               <Mail size={16} className="mt-0.5 text-[#2CA7B0]" />
-              <a href="mailto:info@rotarydivyangcenter.org" className="hover:text-[#17458F]">
-                info@rotarydivyangcenter.org
+              <a href="mailto:rcnewkalyan@gmail.com" className="hover:text-[#17458F]">
+                rcnewkalyan@gmail.com
               </a>
             </li>
           </ul>
@@ -72,7 +92,7 @@ export default function Footer() {
             <li>Legrand</li>
           </ul>
           <Link href="/donate" className="btn-primary mt-5">
-            Support With Donation
+            <HandHeart size={18} /> Support With Donation
           </Link>
         </div>
       </div>

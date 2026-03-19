@@ -17,10 +17,7 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: {
-    default: "Rotary Divyang Center — Free Prosthetic Limbs | Kalyan, Maharashtra",
-    template: "%s | Rotary Divyang Center",
-  },
+  title: "Rotary Divyang Center",
   description:
     "Rotary Divyang Center provides free artificial limbs (prosthetics & orthotics) to people with disabilities. Run by Rotary Club of New Kalyan, Dist. 3142. Giving Hope, Giving Smile.",
   keywords: [
