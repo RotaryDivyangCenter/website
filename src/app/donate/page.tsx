@@ -1,10 +1,17 @@
 'use client';
-import { useState } from 'react';
+
 import { motion } from 'framer-motion';
+<<<<<<< HEAD
 import { HandHeart, Shield, Info, Phone, Footprints, Bot, HeartPulse } from 'lucide-react';
+=======
+import type { ReactNode } from 'react';
+import { HandHeart, Phone, Footprints, HeartPulse } from 'lucide-react';
+>>>>>>> a8a3fa3 (update: redirected donate button to gateway)
 import Link from 'next/link';
 
-function FadeUp({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) {
+const DONATION_GATEWAY_URL = 'https://portal.getepay.in:8443/getepayPortal/formPayment/RSKFORM';
+
+function FadeUp({ children, delay = 0, className = '' }: { children: ReactNode; delay?: number; className?: string }) {
     return (
         <motion.div className={className} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay, ease: 'easeOut' }}>
             {children}
@@ -12,6 +19,7 @@ function FadeUp({ children, delay = 0, className = '' }: { children: React.React
     );
 }
 
+<<<<<<< HEAD
 const amounts = [500, 1000, 2500, 5000, 10000];
 
 export default function DonatePage() {
@@ -25,12 +33,13 @@ export default function DonatePage() {
         alert(`Thank you, ${form.name || 'donor'}! Razorpay integration will process ₹${displayAmount}. This is a placeholder — connect your Razorpay key to go live.`);
     };
 
+=======
+export default function DonatePage() {
+>>>>>>> a8a3fa3 (update: redirected donate button to gateway)
     return (
         <div>
             {/* Hero */}
-            <section
-                className="py-28 text-center" style={{ background: '#1B3A8C' }}
-            >
+            <section className="py-28 text-center" style={{ background: '#1B3A8C' }}>
                 <FadeUp>
                     <p className="section-label mb-3" style={{ color: 'rgba(255,255,255,0.6)' }}>GIVE BACK</p>
                     <h1 className="text-[48px] font-bold text-white mb-4" style={{ fontFamily: "'Merriweather', serif" }}>
@@ -52,17 +61,18 @@ export default function DonatePage() {
                         <span className="section-label mb-5 justify-center">Impact</span>
                         <h2 className="text-[36px] font-bold" style={{ color: '#1A1A2E' }}>Your Donation Goes Directly to Those in Need</h2>
                     </FadeUp>
-                    <div className="grid sm:grid-cols-3 gap-6">
+                    <div className="grid sm:grid-cols-2 gap-6">
                         {[
-                            { icon: <Footprints size={48} className="text-[#1B3A8C]" />, amount: '₹2,500', desc: 'Provides one basic prosthetic limb', delay: 0 },
-                            { icon: <Bot size={48} className="text-[#1B3A8C]" />, amount: '₹8,000', desc: 'Provides one hi-tech LN4 prosthetic', delay: 0.1 },
-                            { icon: <HeartPulse size={48} className="text-[#1B3A8C]" />, amount: '₹500', desc: 'Covers post-fitting rehabilitation care', delay: 0.2 },
+                            { icon: <Footprints size={48} className="text-[#1B3A8C]" />, amount: 'INR 6,000', desc: 'Provides one basic prosthetic limb', delay: 0 },
+                            { icon: <HeartPulse size={48} className="text-[#1B3A8C]" />, amount: 'INR 1,000', desc: 'Covers post-fitting rehabilitation care', delay: 0.2 },
                         ].map((item) => (
                             <FadeUp key={item.amount} delay={item.delay}>
-                                <div className="p-8 text-center bg-[#F7F4EF] border border-[#E2DDD6] h-full flex flex-col items-center justify-center group hover:-translate-y-2 transition-transform duration-500">
-                                    <div className="text-5xl mb-6 transition-transform duration-500 group-hover:scale-110">{item.icon}</div>
-                                    <div className="text-[32px] font-extrabold mb-3" style={{ color: '#1B3A8C' }}>{item.amount}</div>
-                                    <p className="text-[16px] leading-[1.7]" style={{ color: '#5C6475' }}>{item.desc}</p>
+                                <div className="holo-card group relative h-full border border-[#d8e3ee] bg-white p-7 text-center transition-colors duration-300 hover:border-[#17458F] sm:p-8">
+                                    <div className="mb-6 flex justify-center text-[#1B3A8C] transition-colors duration-300 group-hover:text-[#17458F]">{item.icon}</div>
+                                    <h3 className="mb-3 text-[30px] sm:text-[34px] font-extrabold leading-none text-[#1B3A8C] transition-colors duration-300 group-hover:text-[#17458F]">
+                                        {item.amount}
+                                    </h3>
+                                    <p className="text-[15px] leading-[1.75] text-[#5C6475]">{item.desc}</p>
                                 </div>
                             </FadeUp>
                         ))}
@@ -70,12 +80,13 @@ export default function DonatePage() {
                 </div>
             </section>
 
-            {/* Donation Form */}
+            {/* Donation Redirect */}
             <section className="py-20" style={{ background: '#F7F4EF' }}>
                 <div className="max-w-[640px] mx-auto px-6">
                     <FadeUp>
                         <div className="bg-white rounded-3xl p-8 md:p-10" style={{ boxShadow: '0 16px 48px rgba(27,58,140,0.12)' }}>
                             <h2 className="text-[24px] font-bold mb-2" style={{ color: '#1A1A2E' }}>Donate Now</h2>
+<<<<<<< HEAD
                             <p className="text-sm mb-6" style={{ color: '#5C6475' }}>Select an amount or enter a custom value</p>
 
                             {/* Amount buttons */}
@@ -164,6 +175,22 @@ export default function DonatePage() {
                                     <Info size={14} style={{ color: '#1B3A8C' }} /> 80G Tax Exemption Available
                                 </span>
                             </div>
+=======
+                            <h3 className="text-[30px] md:text-[36px] font-extrabold mb-4" style={{ color: '#1B3A8C', fontFamily: "'Merriweather', serif" }}>
+                                Rotary Seva Trust Kalyan
+                            </h3>
+                            <p className="text-sm mb-8" style={{ color: '#5C6475' }}>
+                                You will be redirected to the Rotary Seva Trust Kalyan secure gateway, where all donor details and payment steps are completed.
+                            </p>
+
+                            <a
+                                href={DONATION_GATEWAY_URL}
+                                className="btn-donate w-full justify-center mt-2"
+                                aria-label="Proceed to secure donation gateway"
+                            >
+                                <HandHeart size={20} /> Donate via Secure Gateway
+                            </a>
+>>>>>>> a8a3fa3 (update: redirected donate button to gateway)
                         </div>
                     </FadeUp>
                 </div>
