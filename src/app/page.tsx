@@ -53,19 +53,22 @@ function ImpactStat({ value, suffix, label }: { value: number; suffix: string; l
 
 const services = [
   {
-    title: 'Artificial Legs',
-    desc: 'Reliable lower-limb prosthetics designed for comfort, gait support, and daily independence.',
+    title: 'Limbs',
+    desc: 'AFO (Static, Dynamic), BK, AK, Push Knee, and KAFO support for mobility and daily function.',
     icon: Activity,
+    href: '/services#limbs',
   },
   {
-    title: 'Artificial Hands',
-    desc: 'Upper-limb prosthetic options that improve function for essential work and home activities.',
+    title: 'Hands',
+    desc: 'LN4 hand prosthetic support for upper-limb rehabilitation and functional use.',
     icon: HelpingHand,
+    href: '/services#hands',
   },
   {
-    title: 'LN4 Prosthetics*',
-    desc: 'Hi-tech* LN4 solutions and advanced mobility support for beneficiaries needing enhanced movement.',
+    title: 'Hi-Tech (BK/AK Only)*',
+    desc: 'Hi-tech options are provided only in BK and AK categories, based on clinical assessment.',
     icon: HeartPulse,
+    href: '/services#limbs',
   },
 ];
 
@@ -135,9 +138,8 @@ export default function HomePage() {
           </FadeUp>
           <FadeUp delay={0.08}>
             <p className="text-[#5A5A5A] leading-[1.85] text-[1rem]">
-              Located in Kalyan, Maharashtra, Rotary Divyang Center provides free prosthetic limbs and rehabilitation
-              guidance to beneficiaries. The program collaborates with CSR partners and outreach volunteers to ensure access for
-              families who need support the most.
+              Rotary Divyang Center provides free prosthetic limbs and rehabilitation guidance to beneficiaries, with camp outreach
+              and partnerships that support families across India.
             </p>
           </FadeUp>
         </div>
@@ -148,24 +150,30 @@ export default function HomePage() {
           <FadeUp>
             <p className="section-label">Services</p>
             <h2 className="mt-4 text-[1.9rem] sm:text-[2.4rem] leading-tight font-bold text-[#17458F] font-[var(--font-jakarta)]">
-              Basic and hi-tech* prosthetic support
+              Limb and hand support services
             </h2>
           </FadeUp>
 
           <div className="mt-10 grid md:grid-cols-3 gap-7">
             {services.map((service, index) => {
               const Icon = service.icon;
+              const isLast = index === services.length - 1;
               return (
                 <FadeUp key={service.title} delay={index * 0.08}>
-                  <article className="group border-b border-[#d8e3ee] pb-6">
+                  <article className="group relative border-b border-[#d8e3ee] pb-6">
                     <div className="h-12 w-12 rounded-md bg-[#EDF3F8] text-[#2CA7B0] flex items-center justify-center">
                       <Icon size={22} aria-hidden="true" />
                     </div>
                     <h3 className="mt-4 text-[1.18rem] font-semibold text-[#1A1A1A]">{service.title}</h3>
                     <p className="mt-2 text-[#5A5A5A] leading-[1.7] text-[0.98rem]">{service.desc}</p>
-                    <Link href="/services" className="mt-4 link-inline text-[#17458F]">
-                      Learn more <ArrowRight size={15} />
+                    <Link href={service.href} className="group/learn mt-4 inline-flex items-center gap-1.5 font-semibold text-[#17458F]">
+                      <span className="relative">
+                        Learn more
+                        <span className="absolute left-0 right-0 -bottom-0.5 h-[2px] origin-left scale-x-0 bg-[#17458F] transition-transform duration-300 group-hover/learn:scale-x-100" />
+                      </span>
+                      <ArrowRight size={15} />
                     </Link>
+                    {!isLast && <span className="pointer-events-none absolute -right-3 top-1 bottom-1 hidden w-px bg-[#d8e3ee] md:block" />}
                   </article>
                 </FadeUp>
               );
@@ -173,7 +181,7 @@ export default function HomePage() {
           </div>
           <FadeUp delay={0.12}>
             <p className="mt-7 text-[14px] text-[#5A5A5A]">
-              * Hi-tech limbs are provided only to selected beneficiaries, based on the center&apos;s clinical assessment and final decision.
+              * Hi-tech options are available only in BK and AK categories, based on clinical assessment and final decision.
             </p>
           </FadeUp>
         </div>
@@ -289,8 +297,8 @@ export default function HomePage() {
               Regular camps expand access to prosthetic care
             </h2>
             <p className="mt-4 text-[#5A5A5A] leading-[1.8]">
-              Outreach camps are organized with local institutions and CSR teams to identify beneficiaries, assess mobility needs,
-              and deliver prosthetic fitment at scale.
+              Outreach camps are organized with partner institutions and CSR teams to identify beneficiaries, assess mobility needs,
+              and deliver prosthetic fitment at scale across India.
             </p>
             <Link href="/camps" className="btn-primary mt-6">
               View Camp Schedule <Calendar size={16} />
@@ -322,7 +330,7 @@ export default function HomePage() {
             </h2>
             <p className="mt-4 max-w-[40rem] text-white/85 leading-[1.75]">
               Your contribution supports prosthetic fitment, camp operations, and rehabilitation assistance. Donate securely through
-              Razorpay and directly strengthen someone&apos;s independence.
+              our trust-managed payment gateway and directly strengthen someone&apos;s independence.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link href="/donate" className="btn-donate" aria-label="Donate">
@@ -394,3 +402,4 @@ export default function HomePage() {
     </div>
   );
 }
+

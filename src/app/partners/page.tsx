@@ -15,7 +15,7 @@ const partners = [
     {
         name: 'Acutaas',
         logo: '/acutaas.png',
-        description: 'Healthcare solutions company sponsoring prosthetic equipment and camps across Thane district.',
+        description: 'Healthcare solutions company sponsoring prosthetic equipment and outreach camps across India.',
         type: 'Healthcare & Technology',
         color: '#1B3A8C',
         bg: '#EBF4FF',
@@ -31,7 +31,7 @@ const partners = [
     {
         name: 'Century Rayon',
         logo: '/century_rayon.png',
-        description: 'Textile industry pioneer partnering to fund prosthetic camps for workers and families in Maharashtra.',
+        description: 'Textile industry pioneer partnering to fund prosthetic camps for workers and families across India.',
         type: 'Textile Manufacturing',
         color: '#5A9E3A',
         bg: '#ECFDF5',
@@ -133,3 +133,4 @@ export default function PartnersPage() {
         </div>
     );
 }
+

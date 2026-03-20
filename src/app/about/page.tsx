@@ -17,7 +17,7 @@ const timeline = [
     { year: '2019', title: 'LN4 Hi-Tech Limbs', desc: 'Introduction of LN4 Jaipur Foot technology and hi-tech prosthetic hands in collaboration with international partners.' },
     { year: '2022', title: '500+ Limbs Milestone', desc: 'Crossed the 500 prosthetic limbs milestone — a landmark moment for the center.' },
     { year: '2024', title: '10 Years — 1000+ Lives', desc: 'Celebrated 10 years of service with over 1,000 lives transformed through free prosthetic limbs.' },
-    { year: '2025', title: 'Ongoing Expansion', desc: 'Expanding reach to more districts in Maharashtra with new camp partnerships and CSR support.' },
+    { year: '2025', title: 'Ongoing Expansion', desc: 'Expanding outreach to more regions across India with new camp partnerships and CSR support.' },
 ];
 
 const acknowledgements = [
@@ -51,13 +51,13 @@ export default function AboutPage() {
                             {
                                 icon: <Target size={32} style={{ color: '#1B3A8C' }} />,
                                 title: 'Our Mission',
-                                desc: 'To provide free, high-quality prosthetic limbs to people with disabilities across Maharashtra — regardless of economic status — so every individual can walk, work, and live with dignity.',
+                                desc: 'To provide free, high-quality prosthetic limbs to people with disabilities across India — regardless of economic status — so every individual can walk, work, and live with dignity.',
                                 delay: 0,
                             },
                             {
                                 icon: <Eye size={32} style={{ color: '#7B2D8B' }} />,
                                 title: 'Our Vision',
-                                desc: 'A world where every person with a disability (Divyang) walks with confidence and dignity. We envision a Maharashtra free from mobility-related limitations for amputees.',
+                                desc: 'A world where every person with a disability (Divyang) walks with confidence and dignity. We envision an India free from mobility-related limitations for amputees.',
                                 delay: 0.1,
                             },
                         ].map((item) => (
@@ -147,3 +147,4 @@ export default function AboutPage() {
         </div>
     );
 }
+

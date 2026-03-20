@@ -1,4 +1,5 @@
 'use client';
+import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { services } from '@/data/services';
 import { Footprints, Hand, Zap } from 'lucide-react';
@@ -14,6 +15,28 @@ function FadeUp({ children, delay = 0, className = '' }: { children: React.React
 export default function ServicesPage() {
     const legs = services.filter((s) => s.category === 'legs');
     const hands = services.filter((s) => s.category === 'hands');
+
+    useEffect(() => {
+        const scrollToHash = () => {
+            const hash = window.location.hash.replace('#', '');
+            if (!hash) return;
+
+            const el = document.getElementById(hash);
+            if (!el) return;
+
+            const yOffset = 110;
+            const y = el.getBoundingClientRect().top + window.scrollY - yOffset;
+            window.scrollTo({ top: y, behavior: 'smooth' });
+        };
+
+        const timer = window.setTimeout(scrollToHash, 80);
+        window.addEventListener('hashchange', scrollToHash);
+
+        return () => {
+            window.clearTimeout(timer);
+            window.removeEventListener('hashchange', scrollToHash);
+        };
+    }, []);
 
     const ServiceCard = ({ service, delay }: { service: (typeof services)[0]; delay: number }) => (
         <FadeUp delay={delay}>
@@ -65,43 +88,43 @@ export default function ServicesPage() {
             </section>
 
             {/* Legs */}
-            <section className="py-16" style={{ background: '#F7F4EF' }}>
+            <section id="limbs" className="py-16" style={{ background: '#F7F4EF' }}>
                 <div className="max-w-[1200px] mx-auto px-6">
                     <FadeUp className="flex items-center gap-3 mb-10">
                         <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: '#EBF4FF' }}>
                             <Footprints size={24} style={{ color: '#1B3A8C' }} />
                         </div>
                         <div>
-                            <h2 className="text-[28px] font-bold" style={{ color: '#1A1A2E' }}>Prosthetic Legs</h2>
-                            <p className="text-sm" style={{ color: '#5C6475' }}>Category A — Lower Limb Prosthetics</p>
+                            <h2 className="text-[28px] font-bold" style={{ color: '#1A1A2E' }}>Limbs</h2>
+                            <p className="text-sm" style={{ color: '#5C6475' }}>Category A — Limb and Orthotic Support</p>
                         </div>
                     </FadeUp>
                     <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-6">
                         {legs.map((s, i) => <ServiceCard key={s.id} service={s} delay={i * 0.07} />)}
                     </div>
+                    <FadeUp delay={0.12}>
+                        <p className="mt-8 text-[14px]" style={{ color: '#5C6475' }}>
+                            * Hi-tech options are available only in BK and AK categories, based on clinical assessment and final decision.
+                        </p>
+                    </FadeUp>
                 </div>
             </section>
 
             {/* Hands */}
-            <section className="py-16" style={{ background: '#fff' }}>
+            <section id="hands" className="py-16" style={{ background: '#fff' }}>
                 <div className="max-w-[1200px] mx-auto px-6">
                     <FadeUp className="flex items-center gap-3 mb-10">
                         <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: '#F3E8FF' }}>
                             <Hand size={24} style={{ color: '#7B2D8B' }} />
                         </div>
                         <div>
-                            <h2 className="text-[28px] font-bold" style={{ color: '#1A1A2E' }}>Prosthetic Hands</h2>
-                            <p className="text-sm" style={{ color: '#5C6475' }}>Category B — Upper Limb Prosthetics</p>
+                            <h2 className="text-[28px] font-bold" style={{ color: '#1A1A2E' }}>Hands</h2>
+                            <p className="text-sm" style={{ color: '#5C6475' }}>Category B — Hand Prosthetics</p>
                         </div>
                     </FadeUp>
                     <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {hands.map((s, i) => <ServiceCard key={s.id} service={s} delay={i * 0.07} />)}
                     </div>
-                    <FadeUp delay={0.12}>
-                        <p className="mt-8 text-[14px]" style={{ color: '#5C6475' }}>
-                            * Hi-tech limbs are provided only to selected beneficiaries, based on the center&apos;s clinical assessment and final decision.
-                        </p>
-                    </FadeUp>
                 </div>
             </section>
 
@@ -141,3 +164,4 @@ export default function ServicesPage() {
         </div>
     );
 }
+
