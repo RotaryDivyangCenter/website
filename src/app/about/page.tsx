@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { Target, Eye, Globe, Star, MapPin, Building2, Bookmark, IdCard, Calendar } from 'lucide-react';
+import { Target, Eye, Globe, MapPin, Building2, Bookmark, IdCard, Calendar } from 'lucide-react';
 
 function FadeUp({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) {
     return (
@@ -18,13 +18,6 @@ const timeline = [
     { year: '2022', title: '500+ Limbs Milestone', desc: 'Crossed the 500 prosthetic limbs milestone — a landmark moment for the center.' },
     { year: '2024', title: '10 Years — 1000+ Lives', desc: 'Celebrated 10 years of service with over 1,000 lives transformed through free prosthetic limbs.' },
     { year: '2025', title: 'Ongoing Expansion', desc: 'Expanding outreach to more regions across India with new camp partnerships and CSR support.' },
-];
-
-const acknowledgements = [
-    { name: 'Ellen Meados Prosthetic Hand Foundation', country: 'USA', icon: <Globe size={24} />, desc: 'International partner providing LN4 hi-tech prosthetic hand technology.' },
-    { name: 'Rotary Club of Poona Downtown', country: 'India', icon: <Star size={24} />, desc: 'Sister Rotary club providing collaborative support for camps and outreach.' },
-    { name: 'Rtn. K.V. Mohan Kumar', country: 'LN-4 Ambassador, South Asia', icon: <Star size={24} />, desc: 'Instrumental in bringing LN4 technology to the center.' },
-    { name: 'Rtn. Sudhish Nair', country: 'L4 Coordinator, Rotary Club of New Kalyan', icon: <Star size={24} />, desc: 'Coordinating LN4 prosthetic programs within the club.' },
 ];
 
 export default function AboutPage() {
@@ -86,7 +79,7 @@ export default function AboutPage() {
                         <div className="absolute left-[28px] md:left-1/2 top-0 bottom-0 w-[2px]" style={{ background: '#E2DDD6', transform: 'translateX(-50%)' }} />
                         <div className="space-y-10">
                             {timeline.map((item, i) => (
-                                <FadeUp key={item.year} delay={i * 0.08}>
+                                <FadeUp key={`${item.year}-${item.title}`} delay={i * 0.08}>
                                     <div className={`flex gap-6 md:gap-0 ${i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} items-start`}>
                                         {/* Content */}
                                         <div className={`md:w-[calc(50%-32px)] ${i % 2 === 0 ? 'md:text-right md:pr-8' : 'md:text-left md:pl-8'} pl-16 md:pl-0`}>
@@ -147,4 +140,3 @@ export default function AboutPage() {
         </div>
     );
 }
-
