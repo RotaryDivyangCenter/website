@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
@@ -14,7 +15,7 @@ import {
   HelpingHand,
   Calendar,
 } from 'lucide-react';
-import { campStats } from '@/data/camps';
+import { FALLBACK_STATS, getStats, type Stats } from '@/utils/getStats';
 
 function FadeUp({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   return (
@@ -77,6 +78,30 @@ const csrPartners = [
 ];
 
 export default function HomePage() {
+  const [stats, setStats] = useState<Stats>(FALLBACK_STATS);
+
+  useEffect(() => {
+    let mounted = true;
+
+    const loadStats = async () => {
+      const data = await getStats();
+      if (mounted) {
+        setStats(data);
+      }
+    };
+
+    void loadStats();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  const numericValue = (value: string) => {
+    const parsed = Number(value.replace(/[^\d.-]/g, ''));
+    return Number.isFinite(parsed) ? parsed : 0;
+  };
+
   return (
     <div>
       <section
@@ -192,12 +217,12 @@ export default function HomePage() {
           </FadeUp>
 
           <div className="mt-8 grid sm:grid-cols-2 md:grid-cols-3 gap-4">
-            <ImpactStat value={campStats.totalBeneficiaries} suffix="+" label="Lives supported" />
-            <ImpactStat value={campStats.totalLimbs} suffix="+" label="Prosthetic limbs fitted" />
-            <ImpactStat value={campStats.totalCamps} suffix="+" label="Outreach camps conducted" />
-            <ImpactStat value={40} suffix="+" label="Hours per week" />
-            <ImpactStat value={campStats.yearsActive} suffix="+" label="Years of service" />
-            <ImpactStat value={4} suffix="+" label="CSR and institutional partners" />
+            <ImpactStat value={numericValue(stats.lives_supported)} suffix="+" label="Lives supported" />
+            <ImpactStat value={numericValue(stats.prosthetic_limbs)} suffix="+" label="Prosthetic limbs fitted" />
+            <ImpactStat value={numericValue(stats.camps)} suffix="+" label="Outreach camps conducted" />
+            <ImpactStat value={numericValue(stats.hours_per_week)} suffix="+" label="Hours per week" />
+            <ImpactStat value={numericValue(stats.years)} suffix="+" label="Years of service" />
+            <ImpactStat value={numericValue(stats.csr_partners)} suffix="" label="CSR and institutional partners" />
           </div>
         </div>
       </section>
