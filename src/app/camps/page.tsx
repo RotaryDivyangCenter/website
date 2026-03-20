@@ -1,10 +1,12 @@
 'use client';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { camps, campStats } from '@/data/camps';
+import { camps } from '@/data/camps';
 import { useInView } from 'react-intersection-observer';
 import CountUp from 'react-countup';
 import Link from 'next/link';
 import { Calendar, MapPin, HandHeart, Users, Tent } from 'lucide-react';
+import { FALLBACK_STATS, getStats, type Stats } from '@/utils/getStats';
 
 function FadeUp({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) {
     return (
@@ -27,6 +29,30 @@ function StatNum({ value, suffix, label }: { value: number; suffix: string; labe
 }
 
 export default function CampsPage() {
+    const [stats, setStats] = useState<Stats>(FALLBACK_STATS);
+
+    useEffect(() => {
+        let mounted = true;
+
+        const loadStats = async () => {
+            const data = await getStats();
+            if (mounted) {
+                setStats(data);
+            }
+        };
+
+        void loadStats();
+
+        return () => {
+            mounted = false;
+        };
+    }, []);
+
+    const numericValue = (value: string) => {
+        const parsed = Number(value.replace(/[^\d.-]/g, ''));
+        return Number.isFinite(parsed) ? parsed : 0;
+    };
+
     return (
         <div>
             {/* Hero */}
@@ -46,10 +72,10 @@ export default function CampsPage() {
             <section style={{ background: '#142d70' }} className="py-12">
                 <div className="max-w-[900px] mx-auto px-6">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                        <StatNum value={campStats.totalCamps} suffix="+" label="Camps Conducted" />
-                        <StatNum value={campStats.totalBeneficiaries} suffix="+" label="Limbs Provided" />
-                        <StatNum value={campStats.yearsActive} suffix="+" label="Years Active" />
-                        <StatNum value={50} suffix="+" label="Districts Covered" />
+                        <StatNum value={numericValue(stats.camps)} suffix="+" label="Camps Conducted" />
+                        <StatNum value={numericValue(stats.prosthetic_limbs)} suffix="+" label="Limbs Provided" />
+                        <StatNum value={numericValue(stats.years)} suffix="+" label="Years Active" />
+                        <StatNum value={numericValue(stats.csr_partners)} suffix="" label="CSR Partners" />
                     </div>
                 </div>
             </section>
