@@ -32,6 +32,7 @@ export default function Footer() {
                 alt="Rotary Club of New Kalyan logo"
                 fill
                 sizes="176px"
+                loading="eager"
                 className="object-contain"
               />
             </span>
