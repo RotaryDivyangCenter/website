@@ -29,7 +29,6 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    setOpen(false);
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
   }, [pathname]);
 
@@ -108,6 +107,7 @@ export default function Navbar() {
                   alt="Rotary Club of New Kalyan logo"
                   fill
                   sizes="112px"
+                  loading="eager"
                   className="object-contain"
                 />
               </span>

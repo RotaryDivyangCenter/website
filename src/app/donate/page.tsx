@@ -1,12 +1,8 @@
 'use client';
 
 import { motion } from 'framer-motion';
-<<<<<<< HEAD
-import { HandHeart, Shield, Info, Phone, Footprints, Bot, HeartPulse } from 'lucide-react';
-=======
 import type { ReactNode } from 'react';
 import { HandHeart, Phone, Footprints, HeartPulse } from 'lucide-react';
->>>>>>> a8a3fa3 (update: redirected donate button to gateway)
 import Link from 'next/link';
 
 const DONATION_GATEWAY_URL = 'https://portal.getepay.in:8443/getepayPortal/formPayment/RSKFORM';
@@ -19,23 +15,7 @@ function FadeUp({ children, delay = 0, className = '' }: { children: ReactNode; 
     );
 }
 
-<<<<<<< HEAD
-const amounts = [500, 1000, 2500, 5000, 10000];
-
 export default function DonatePage() {
-    const [selected, setSelected] = useState<number | 'custom'>(2500);
-    const [custom, setCustom] = useState('');
-    const [form, setForm] = useState({ name: '', email: '', phone: '' });
-
-    const displayAmount = selected === 'custom' ? Number(custom) || 0 : selected;
-
-    const handleDonate = () => {
-        alert(`Thank you, ${form.name || 'donor'}! Razorpay integration will process ₹${displayAmount}. This is a placeholder — connect your Razorpay key to go live.`);
-    };
-
-=======
-export default function DonatePage() {
->>>>>>> a8a3fa3 (update: redirected donate button to gateway)
     return (
         <div>
             {/* Hero */}
@@ -86,96 +66,6 @@ export default function DonatePage() {
                     <FadeUp>
                         <div className="bg-white rounded-3xl p-8 md:p-10" style={{ boxShadow: '0 16px 48px rgba(27,58,140,0.12)' }}>
                             <h2 className="text-[24px] font-bold mb-2" style={{ color: '#1A1A2E' }}>Donate Now</h2>
-<<<<<<< HEAD
-                            <p className="text-sm mb-6" style={{ color: '#5C6475' }}>Select an amount or enter a custom value</p>
-
-                            {/* Amount buttons */}
-                            <div className="grid grid-cols-3 gap-3 mb-4">
-                                {amounts.map((amt) => (
-                                    <button
-                                        key={amt}
-                                        onClick={() => { setSelected(amt); setCustom(''); }}
-                                        className="py-3 rounded-xl font-bold text-[15px] transition-all duration-200"
-                                        style={{
-                                            border: selected === amt ? '2px solid #E8430A' : '1.5px solid #E2DDD6',
-                                            background: selected === amt ? '#FFF3EF' : '#F7F4EF',
-                                            color: selected === amt ? '#E8430A' : '#1A1A2E',
-                                        }}
-                                    >
-                                        ₹{amt.toLocaleString('en-IN')}
-                                    </button>
-                                ))}
-                                <button
-                                    onClick={() => setSelected('custom')}
-                                    className="col-span-3 py-3 rounded-xl font-bold text-[15px] transition-all duration-200"
-                                    style={{
-                                        border: selected === 'custom' ? '2px solid #E8430A' : '1.5px solid #E2DDD6',
-                                        background: selected === 'custom' ? '#FFF3EF' : '#F7F4EF',
-                                        color: selected === 'custom' ? '#E8430A' : '#1A1A2E',
-                                    }}
-                                >
-                                    Custom Amount
-                                </button>
-                            </div>
-                            {selected === 'custom' && (
-                                <div className="mb-4">
-                                    <input
-                                        type="number"
-                                        placeholder="Enter amount in ₹"
-                                        value={custom}
-                                        onChange={(e) => setCustom(e.target.value)}
-                                        className="w-full px-4 py-3 rounded-xl border text-[15px] outline-none"
-                                        style={{ border: '1.5px solid #E2DDD6', fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                                    />
-                                </div>
-                            )}
-
-                            {/* Form fields */}
-                            <div className="space-y-4 mt-6">
-                                {[
-                                    { id: 'name', label: 'Full Name', type: 'text', placeholder: 'Your full name' },
-                                    { id: 'email', label: 'Email Address', type: 'email', placeholder: 'your@email.com' },
-                                    { id: 'phone', label: 'Phone Number', type: 'tel', placeholder: '+91 XXXXX XXXXX' },
-                                ].map((field) => (
-                                    <div key={field.id}>
-                                        <label htmlFor={field.id} className="block text-sm font-semibold mb-1.5" style={{ color: '#1A1A2E' }}>
-                                            {field.label}
-                                        </label>
-                                        <input
-                                            id={field.id}
-                                            type={field.type}
-                                            placeholder={field.placeholder}
-                                            value={form[field.id as keyof typeof form]}
-                                            onChange={(e) => setForm({ ...form, [field.id]: e.target.value })}
-                                            className="w-full px-4 py-3 rounded-xl border text-[15px] outline-none transition-all"
-                                            style={{ border: '1.5px solid #E2DDD6', fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                                            onFocus={(e) => (e.target.style.border = '1.5px solid #1B3A8C')}
-                                            onBlur={(e) => (e.target.style.border = '1.5px solid #E2DDD6')}
-                                        />
-                                    </div>
-                                ))}
-                            </div>
-
-                            {/* Donate button */}
-                            <button
-                                onClick={handleDonate}
-                                className="btn-donate w-full justify-center mt-8"
-                                aria-label={`Donate ₹${displayAmount} via Razorpay`}
-                            >
-                                <HandHeart size={20} />
-                                Donate ₹{displayAmount > 0 ? displayAmount.toLocaleString('en-IN') : '—'} via Razorpay
-                            </button>
-
-                            {/* Trust indicators */}
-                            <div className="flex flex-wrap items-center justify-center gap-4 mt-5">
-                                <span className="flex items-center gap-1.5 text-[12px] font-medium" style={{ color: '#5C6475' }}>
-                                    <Shield size={14} style={{ color: '#5A9E3A' }} /> Secure Payment
-                                </span>
-                                <span className="flex items-center gap-1.5 text-[12px] font-medium" style={{ color: '#5C6475' }}>
-                                    <Info size={14} style={{ color: '#1B3A8C' }} /> 80G Tax Exemption Available
-                                </span>
-                            </div>
-=======
                             <h3 className="text-[30px] md:text-[36px] font-extrabold mb-4" style={{ color: '#1B3A8C', fontFamily: "'Merriweather', serif" }}>
                                 Rotary Seva Trust Kalyan
                             </h3>
@@ -190,7 +80,6 @@ export default function DonatePage() {
                             >
                                 <HandHeart size={20} /> Donate via Secure Gateway
                             </a>
->>>>>>> a8a3fa3 (update: redirected donate button to gateway)
                         </div>
                     </FadeUp>
                 </div>

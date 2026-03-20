@@ -43,8 +43,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${inter.variable} ${jakarta.variable} font-[var(--font-inter)]`}>
+    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
+      <body className={`${inter.variable} ${jakarta.variable} font-[var(--font-inter)]`} suppressHydrationWarning>
         <Navbar />
         <main id="main-content">{children}</main>
         <Footer />
@@ -52,4 +52,3 @@ export default function RootLayout({
     </html>
   );
 }
-

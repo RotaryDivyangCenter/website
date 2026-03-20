@@ -1,13 +1,10 @@
 'use client';
 
-import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import CountUp from 'react-countup';
 import { useInView } from 'react-intersection-observer';
-import Lightbox from 'yet-another-react-lightbox';
-import 'yet-another-react-lightbox/styles.css';
 import {
   ArrowRight,
   HandHeart,
@@ -80,8 +77,6 @@ const csrPartners = [
 ];
 
 export default function HomePage() {
-  const [lightboxIndex, setLightboxIndex] = useState(-1);
-
   return (
     <div>
       <section

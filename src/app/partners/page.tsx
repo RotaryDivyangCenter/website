@@ -1,7 +1,6 @@
 'use client';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { Users } from 'lucide-react';
 
 function FadeUp({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) {
     return (
@@ -43,19 +42,6 @@ const partners = [
         type: 'Electrical Infrastructure',
         color: '#2AA8C4',
         bg: '#EBF4FF',
-    },
-];
-
-const intl = [
-    {
-        name: 'Ellen Meados Prosthetic Hand Foundation',
-        country: 'USA',
-        desc: 'Pioneering foundation that developed the LN4 hi-tech prosthetic hand technology. Provides training and technology partnership to RDC.',
-    },
-    {
-        name: 'Rotary Club of Poona Downtown',
-        country: 'India – Dist. 3131',
-        desc: 'Sister Rotary club supporting RDC through joint camps, funding, and Rotarian volunteerism.',
     },
 ];
 
