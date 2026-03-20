@@ -37,7 +37,7 @@ export default function CampsPage() {
                         Our Camps — Reaching the Unreached
                     </h1>
                     <p className="mt-4 text-[16px] max-w-lg mx-auto" style={{ color: 'rgba(255,255,255,0.75)' }}>
-                        Since 2019, we&apos;ve conducted prosthetic fitment camps across Thane and Maharashtra.
+                        Since 2019, we&apos;ve conducted prosthetic fitment camps in communities across India.
                     </p>
                 </FadeUp>
             </section>
@@ -60,7 +60,7 @@ export default function CampsPage() {
                     <FadeUp className="text-center mb-16 max-w-2xl mx-auto">
                         <span className="section-label mb-5 justify-center">Sample Camps</span>
                         <h2 className="text-[36px] font-bold" style={{ color: '#1A1A2E' }}>Featured Camps</h2>
-                        <p className="mt-4 text-[16px] leading-[1.7]" style={{ color: '#5C6475' }}>A selection from our 85+ camps conducted across Maharashtra</p>
+                        <p className="mt-4 text-[16px] leading-[1.7]" style={{ color: '#5C6475' }}>A selection from our 85+ camps conducted across India</p>
                     </FadeUp>
                     <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {camps.map((camp, i) => (
@@ -107,7 +107,7 @@ export default function CampsPage() {
                             Support Our Next Camp
                         </h2>
                         <p className="text-[16px] leading-[1.75] mb-8" style={{ color: '#5C6475' }}>
-                            Your donation directly funds the next prosthetic camp. Help us reach more people in need across Maharashtra.
+                            Your donation directly funds the next prosthetic camp. Help us reach more people in need across India.
                         </p>
                         <div className="flex flex-wrap gap-4 justify-center">
                             <Link href="/donate" className="btn-donate">
@@ -123,3 +123,4 @@ export default function CampsPage() {
         </div>
     );
 }
+
