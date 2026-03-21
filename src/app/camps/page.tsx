@@ -6,7 +6,7 @@ import { useInView } from 'react-intersection-observer';
 import CountUp from 'react-countup';
 import Link from 'next/link';
 import { Calendar, MapPin, HandHeart, Users, Tent } from 'lucide-react';
-import { FALLBACK_STATS, getStats, type Stats } from '@/utils/getStats';
+import { FALLBACK_STATS, type Stats } from '@/utils/getStats';
 
 function FadeUp({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) {
     return (
@@ -35,9 +35,18 @@ export default function CampsPage() {
         let mounted = true;
 
         const loadStats = async () => {
-            const data = await getStats();
-            if (mounted) {
-                setStats(data);
+            try {
+                const response = await fetch('/api/stats');
+                if (!response.ok) {
+                    return;
+                }
+
+                const data = (await response.json()) as Stats;
+                if (mounted) {
+                    setStats(data);
+                }
+            } catch {
+                // Keep fallback stats if API is unavailable.
             }
         };
 

@@ -15,7 +15,7 @@ import {
   HelpingHand,
   Calendar,
 } from 'lucide-react';
-import { FALLBACK_STATS, getStats, type Stats } from '@/utils/getStats';
+import { FALLBACK_STATS, type Stats } from '@/utils/getStats';
 
 function FadeUp({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   return (
@@ -84,9 +84,18 @@ export default function HomePage() {
     let mounted = true;
 
     const loadStats = async () => {
-      const data = await getStats();
-      if (mounted) {
-        setStats(data);
+      try {
+        const response = await fetch('/api/stats');
+        if (!response.ok) {
+          return;
+        }
+
+        const data = (await response.json()) as Stats;
+        if (mounted) {
+          setStats(data);
+        }
+      } catch {
+        // Keep fallback stats if API is unavailable.
       }
     };
 

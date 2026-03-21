@@ -1,113 +1,113 @@
-'use client';
-import { useState } from 'react';
-import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
-import Lightbox from 'yet-another-react-lightbox';
-import 'yet-another-react-lightbox/styles.css';
+import GalleryClient from './GalleryClient';
+import { getServerFetchOptions } from '@/config/cache';
 
-function FadeUp({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) {
-    return (
-        <motion.div className={className} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay, ease: 'easeOut' }}>
-            {children}
-        </motion.div>
-    );
-}
+export const dynamic = 'force-dynamic';
 
-const allPhotos = [
-    { src: '/1.jpg', alt: 'Rotary Divyang Center Exterior', caption: 'Rotary Divyang Center, Kalyan', tag: 'center', h: 'h-[290px]' },
-    { src: '/2.jpg', alt: 'Inside the Center', caption: 'Inside the Prosthetics Unit', tag: 'center', h: 'h-[220px]' },
-    { src: '/3.jpg', alt: 'Center Building', caption: 'Center building and facilities', tag: 'center', h: 'h-[260px]' },
-    { src: '/4.jpg', alt: 'Gallery Photo 4', caption: 'Prosthetic fitting session', tag: 'camps', h: 'h-[330px]' },
-    { src: '/1.jpg', alt: 'Camp Photo 1', caption: 'Camp at Kalyan - March 2015', tag: 'camps', h: 'h-[240px]' },
-    { src: '/2.jpg', alt: 'Camp Photo 2', caption: 'LN4 Limb fitment camp', tag: 'camps', h: 'h-[300px]' },
-    { src: '/3.jpg', alt: 'Event Photo 1', caption: 'Award ceremony 2024', tag: 'events', h: 'h-[250px]' },
-    { src: '/4.jpg', alt: 'Event Photo 2', caption: '10 Years Celebration', tag: 'events', h: 'h-[310px]' },
+type ApiPhoto = {
+    id: string;
+    url: string;
+};
+
+type GalleryPhoto = {
+    id: string;
+    src: string;
+    alt: string;
+    caption: string;
+    tag: string;
+    h: string;
+};
+
+const SEED = 'rotary-gallery';
+
+const HEIGHTS = ['h-[290px]', 'h-[220px]', 'h-[260px]', 'h-[330px]', 'h-[240px]', 'h-[300px]', 'h-[250px]', 'h-[310px]'];
+const TAGS = ['center', 'camps', 'events'];
+
+const fallbackPhotos: GalleryPhoto[] = [
+    { id: 'fallback-1', src: '/1.jpg', alt: 'Rotary Divyang Center Exterior', caption: 'Rotary Divyang Center, Kalyan', tag: 'center', h: 'h-[290px]' },
+    { id: 'fallback-2', src: '/2.jpg', alt: 'Inside the Center', caption: 'Inside the Prosthetics Unit', tag: 'center', h: 'h-[220px]' },
+    { id: 'fallback-3', src: '/3.jpg', alt: 'Center Building', caption: 'Center building and facilities', tag: 'center', h: 'h-[260px]' },
+    { id: 'fallback-4', src: '/4.jpg', alt: 'Prosthetic fitting session', caption: 'Prosthetic fitting session', tag: 'camps', h: 'h-[330px]' },
+    { id: 'fallback-5', src: '/1.jpg', alt: 'Camp at Kalyan', caption: 'Camp at Kalyan - March 2015', tag: 'camps', h: 'h-[240px]' },
+    { id: 'fallback-6', src: '/2.jpg', alt: 'Limb fitment camp', caption: 'LN4 Limb fitment camp', tag: 'camps', h: 'h-[300px]' },
+    { id: 'fallback-7', src: '/3.jpg', alt: 'Award ceremony', caption: 'Award ceremony 2024', tag: 'events', h: 'h-[250px]' },
+    { id: 'fallback-8', src: '/4.jpg', alt: '10 Years celebration', caption: '10 Years Celebration', tag: 'events', h: 'h-[310px]' },
 ];
 
-const tabs = ['all', 'center', 'camps', 'events'];
+function hashString(value: string): number {
+    let hash = 2166136261;
+    for (let i = 0; i < value.length; i += 1) {
+        hash ^= value.charCodeAt(i);
+        hash = Math.imul(hash, 16777619);
+    }
+    return hash >>> 0;
+}
 
-export default function GalleryPage() {
-    const [activeTab, setActiveTab] = useState('all');
-    const [lightboxIndex, setLightboxIndex] = useState(-1);
+function mulberry32(seed: number) {
+    return function random() {
+        let t = (seed += 0x6d2b79f5);
+        t = Math.imul(t ^ (t >>> 15), t | 1);
+        t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+}
 
-    const filtered = activeTab === 'all' ? allPhotos : allPhotos.filter((p) => p.tag === activeTab);
+function seededShuffle<T>(items: T[], seed: string): T[] {
+    const array = [...items];
+    const random = mulberry32(hashString(seed));
 
-    return (
-        <div>
-            {/* Hero */}
-            <section className="py-20 text-center" style={{ background: '#1B3A8C' }}>
-                <FadeUp>
-                    <p className="section-label mb-3" style={{ color: 'rgba(255,255,255,0.6)' }}>MOMENTS</p>
-                    <h1 className="text-[48px] font-bold text-white" style={{ fontFamily: "'Merriweather', serif" }}>Gallery</h1>
-                    <p className="mt-3 text-[16px]" style={{ color: 'rgba(255,255,255,0.75)' }}>
-                        Stories told through pictures — camps, smiles, and transformed lives.
-                    </p>
-                </FadeUp>
-            </section>
+    for (let i = array.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
 
-            {/* Filter Tabs */}
-            <section className="py-8" style={{ background: '#fff', borderBottom: '1px solid #E2DDD6' }}>
-                <div className="max-w-[1200px] mx-auto px-6 flex gap-3 flex-wrap">
-                    {tabs.map((tab) => (
-                        <button
-                            key={tab}
-                            onClick={() => setActiveTab(tab)}
-                            className="px-5 py-2 rounded-full text-sm font-semibold capitalize transition-all duration-200"
-                            style={{
-                                background: activeTab === tab ? '#1B3A8C' : '#EBF4FF',
-                                color: activeTab === tab ? '#fff' : '#1B3A8C',
-                            }}
-                        >
-                            {tab}
-                        </button>
-                    ))}
-                </div>
-            </section>
+    return array;
+}
 
-            {/* Masonry Grid */}
-            <section className="py-16" style={{ background: '#F7F4EF' }}>
-                <div className="max-w-[1200px] mx-auto px-6">
-                    <AnimatePresence mode="popLayout">
-                        <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 [column-fill:_balance]">
-                            {filtered.map((photo, i) => (
-                                <motion.div
-                                    key={photo.src + photo.caption + i}
-                                    initial={{ opacity: 0, scale: 0.96 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    exit={{ opacity: 0, scale: 0.96 }}
-                                    transition={{ duration: 0.3, delay: i * 0.05 }}
-                                    className={`relative mb-4 break-inside-avoid overflow-hidden cursor-pointer group ${photo.h}`}
-                                    onClick={() => setLightboxIndex(i)}
-                                >
-                                    <Image
-                                        src={photo.src}
-                                        alt={photo.alt}
-                                        fill
-                                        className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                                        sizes="(max-width: 768px) 100vw, 33vw"
-                                        loading="lazy"
-                                    />
-                                    {/* Hover overlay */}
-                                    <div
-                                        className="absolute inset-0 flex items-end p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                                        style={{ background: 'rgba(27,58,140,0.26)' }}
-                                    >
-                                        <p className="text-white text-sm font-medium">{photo.caption}</p>
-                                    </div>
-                                </motion.div>
-                            ))}
-                        </div>
-                    </AnimatePresence>
-                </div>
-            </section>
+function mapDrivePhotos(apiPhotos: ApiPhoto[]): GalleryPhoto[] {
+    return apiPhotos.map((photo, index) => ({
+        id: photo.id,
+        src: photo.url,
+        alt: `Rotary gallery photo ${index + 1}`,
+        caption: 'Rotary Divyang Center moments',
+        tag: TAGS[index % TAGS.length],
+        h: HEIGHTS[index % HEIGHTS.length],
+    }));
+}
 
-            {/* Lightbox */}
-            <Lightbox
-                open={lightboxIndex >= 0}
-                index={lightboxIndex}
-                close={() => setLightboxIndex(-1)}
-                slides={filtered.map((p) => ({ src: p.src, alt: p.alt }))}
-            />
-        </div>
-    );
+async function getGalleryPhotos(): Promise<GalleryPhoto[]> {
+    try {
+        const endpoint = '/api/gallery';
+        let response: Response;
+        const requestOptions = {
+            ...getServerFetchOptions(),
+            cache: 'no-store' as const,
+        };
+
+        try {
+            response = await fetch(endpoint, requestOptions);
+        } catch {
+            const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
+            response = await fetch(`${baseUrl}${endpoint}`, requestOptions);
+        }
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch gallery images: ${response.status}`);
+        }
+
+        const data = (await response.json()) as ApiPhoto[];
+
+        if (!Array.isArray(data) || data.length === 0) {
+            throw new Error('No gallery images returned from API');
+        }
+
+        return mapDrivePhotos(seededShuffle(data, SEED));
+    } catch {
+        return seededShuffle(fallbackPhotos, SEED);
+    }
+}
+
+export default async function GalleryPage() {
+    const photos = await getGalleryPhotos();
+
+    return <GalleryClient photos={photos} />;
 }

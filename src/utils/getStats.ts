@@ -1,3 +1,5 @@
+import { getServerFetchOptions } from '@/config/cache';
+
 export type Stats = {
   lives_supported: string;
   prosthetic_limbs: string;
@@ -16,8 +18,7 @@ export const FALLBACK_STATS: Stats = {
   csr_partners: '4+',
 };
 
-const SHEET_ID = '1sQMC3DnHGHZhwudcqCyz0hHNXG8XJnyvYU8I6crTVCM';
-const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+const SHEET_URL = process.env.GOOGLE_SHEET_URL;
 
 type GvizResponse = {
   table?: {
@@ -89,7 +90,11 @@ function withFallback(stats: Stats): Stats {
 
 export async function getStats(): Promise<Stats> {
   try {
-    const response = await fetch(SHEET_URL, { next: { revalidate: 60 } });
+    if (!SHEET_URL) {
+      return FALLBACK_STATS;
+    }
+
+    const response = await fetch(SHEET_URL, getServerFetchOptions());
 
     if (!response.ok) {
       return FALLBACK_STATS;
