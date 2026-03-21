@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import type { ReactNode } from 'react';
 import { HandHeart, Phone, Footprints, HeartPulse } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const DONATION_GATEWAY_URL = 'https://portal.getepay.in:8443/getepayPortal/formPayment/RSKFORM';
 
@@ -32,6 +33,42 @@ export default function DonatePage() {
                         &quot;Giving Hope, Giving Smile&quot;
                     </p>
                 </FadeUp>
+            </section>
+
+            {/* Emotional Bond */}
+            <section className="py-20"  style={{ background: '#F7F4EF' }}>
+                <div className="max-w-300 mx-auto px-6">
+                    <div className="grid gap-10 items-center md:grid-cols-2">
+                        <FadeUp>
+                            <p className="section-label mb-4">Human Connection</p>
+                            <h2 className="text-[34px] md:text-[40px] font-bold leading-tight mb-5" style={{ color: '#1A1A2E', fontFamily: "'Merriweather', serif" }}>
+                                Your kindness reaches a real heart, a real life.
+                            </h2>
+                            <p className="text-[16px] leading-[1.8]" style={{ color: '#5C6475' }}>
+                                Behind every donation is a patient waiting to stand, walk, and smile again. When you donate,
+                                you are not just funding treatment. You are holding someone&apos;s hand through their journey
+                                back to confidence and dignity.
+                            </p>
+                            <p className="mt-4 text-[16px] leading-[1.8] italic" style={{ color: '#D14D72', fontFamily: "'Merriweather', serif" }}>
+                                A donor&apos;s compassion becomes a patient&apos;s new beginning.
+                            </p>
+                        </FadeUp>
+
+                        <FadeUp delay={0.15} className="flex justify-center md:justify-end">
+                            <div className="relative w-full max-w-150">
+                                <Image
+                                    src="/donate_heart.png"
+                                    alt="Heart symbolizing the emotional bond between donors and patients"
+                                    width={620}
+                                    height={620}
+                                    className="h-auto w-full select-none"
+                                    style={{ mixBlendMode: 'multiply', filter: 'contrast(1.08) saturate(1.05)' }}
+                                    priority
+                                />
+                            </div>
+                        </FadeUp>
+                    </div>
+                </div>
             </section>
 
             {/* Why Donate */}
@@ -75,6 +112,7 @@ export default function DonatePage() {
 
                             <a
                                 href={DONATION_GATEWAY_URL}
+                                target="_blank"
                                 className="btn-donate w-full justify-center mt-2"
                                 aria-label="Proceed to secure donation gateway"
                             >
