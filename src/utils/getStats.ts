@@ -1,3 +1,5 @@
+
+
 import { getServerFetchOptions } from '@/config/cache';
 
 export type Stats = {
@@ -18,7 +20,9 @@ export const FALLBACK_STATS: Stats = {
   csr_partners: '4+',
 };
 
-const SHEET_URL = process.env.GOOGLE_SHEET_URL;
+const SHEET_URL = process.env.GOOGLE_SHEET_URL
+  ? `${process.env.GOOGLE_SHEET_URL}&sheet=Stats&headers=1`
+  : undefined;
 
 type GvizResponse = {
   table?: {
@@ -43,36 +47,32 @@ function extractJson(text: string): string {
   return text.slice(start, end + 1);
 }
 
+// Column order in the stats sheet: A=lives_supported, B=prosthetic_limbs,
+// C=camps, D=hours_per_week, E=years, F=csr_partners.
+// We map by position so the utility is immune to header label changes.
+const STATS_COLUMN_ORDER: (keyof Stats)[] = [
+  'lives_supported',
+  'prosthetic_limbs',
+  'camps',
+  'hours_per_week',
+  'years',
+  'csr_partners',
+];
+
 function mapFirstRow(parsed: GvizResponse): Stats | null {
-  const cols = parsed.table?.cols ?? [];
   const rows = parsed.table?.rows ?? [];
 
-  if (!cols.length || !rows.length) {
-    return null;
-  }
+  if (!rows.length) return null;
 
   const row = rows[0]?.c ?? [];
-  const mapped = cols.reduce<Record<string, string>>((acc, col, index) => {
-    const key = toStringValue(col.label || col.id).toLowerCase().replace(/\s+/g, '_');
-    if (!key) return acc;
 
-    acc[key] = toStringValue(row[index]?.v);
-    return acc;
-  }, {});
+  const result = {} as Stats;
+  STATS_COLUMN_ORDER.forEach((key, index) => {
+    result[key] = toStringValue(row[index]?.v);
+  });
 
-  const data = [mapped];
-  const first = data[0];
-
-  if (!first) return null;
-
-  const result: Stats = {
-    lives_supported: first.lives_supported || '',
-    prosthetic_limbs: first.prosthetic_limbs || '',
-    camps: first.camps || '',
-    hours_per_week: first.hours_per_week || '',
-    years: first.years || '',
-    csr_partners: first.csr_partners || '',
-  };
+  // Return null only if every value is empty (completely blank row)
+  if (STATS_COLUMN_ORDER.every((k) => !result[k])) return null;
 
   return result;
 }

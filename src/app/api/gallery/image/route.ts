@@ -48,8 +48,8 @@ export async function GET(req: NextRequest) {
                 status: 200,
                 headers: {
                     'Content-Type': contentType,
-                    // Cache for 24 hours; Drive image content doesn't change frequently.
-                    'Cache-Control': 'public, max-age=86400, stale-while-revalidate=604800',
+                    // Keep image cache short so Drive updates reflect quickly.
+                    'Cache-Control': 'public, max-age=300, must-revalidate',
                 },
             });
         }

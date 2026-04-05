@@ -6,6 +6,15 @@ const nextConfig: NextConfig = {
   },
   allowedDevOrigins: ['192.168.10.39'],
   images: {
+    localPatterns: [
+      {
+        pathname: '/**',
+      },
+      {
+        pathname: '/api/gallery/image',
+        search: '?id=*',
+      },
+    ],
     remotePatterns: [
       {
         protocol: 'https',
