@@ -54,23 +54,23 @@ export default function Navbar() {
           boxShadow: scrolled ? '0 10px 32px rgba(17, 51, 109, 0.08)' : 'none',
         }}
       >
-        <div className="container-shell h-24 flex items-center justify-between gap-4">
-          <Link href="/" className="flex items-center gap-4" aria-label="Rotary Divyang Center home">
-            <div className="relative h-14 w-14 sm:h-16 sm:w-16 overflow-hidden rounded-full border border-[#d8e3ee]">
+        <div className="container-shell h-24 flex items-center justify-between gap-2 sm:gap-4">
+          <Link href="/" className="flex flex-1 items-center gap-2 sm:gap-4 min-w-0" aria-label="Rotary Divyang Center home">
+            <div className="relative h-16 w-16 sm:h-16 sm:w-16 overflow-hidden rounded-full border border-[#d8e3ee]">
               <Image
                 src="/logo-circular.png"
                 alt="Rotary Divyang Center logo"
                 fill
-                sizes="(max-width: 640px) 56px, 64px"
+                sizes="(max-width: 640px) 64px, 64px"
                 className="object-cover"
                 priority
               />
             </div>
-            <div className="hidden sm:block">
-              <p className="text-[1.18rem] font-bold leading-tight text-[#17458F] font-[var(--font-jakarta)]">
+            <div className="block min-w-0">
+              <p className="text-[0.80rem] sm:text-[1.18rem] font-bold leading-tight text-[#17458F] font-[var(--font-jakarta)] whitespace-nowrap truncate">
                 Rotary Divyang Center
               </p>
-              <p className="text-[0.80rem] text-[#7C8A97]">Giving Hope, Giving Smile</p>
+              <p className="text-[0.68rem] sm:text-[0.80rem] text-[#7C8A97] whitespace-nowrap truncate">Giving Hope, Giving Smile</p>
             </div>
           </Link>
 
@@ -93,7 +93,25 @@ export default function Navbar() {
             ))}
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+            <a
+              href="https://rcnewkalyan.rotaryindia.org"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Visit Rotary Club of New Kalyan website"
+              className="inline-block sm:hidden transition-transform active:scale-95"
+            >
+              <span className="relative block h-18 w-32">
+                <Image
+                  src="/rcnewkalyan_no_bg.png"
+                  alt="Rotary Club of New Kalyan logo"
+                  fill
+                  sizes="96px"
+                  loading="eager"
+                  className="object-contain"
+                />
+              </span>
+            </a>
             <a
               href="https://rcnewkalyan.rotaryindia.org"
               target="_blank"
@@ -112,12 +130,14 @@ export default function Navbar() {
                 />
               </span>
             </a>
-            <Link href="/donate" className="btn-donate hidden sm:inline-flex !text-[0.95rem] !px-6 !py-3" aria-label="Donate now">
-              <HandHeart size={18} /> Donate
-            </Link>
+            <div className="hidden lg:block">
+              <Link href="/donate" className="btn-donate !text-[0.95rem] !px-6 !py-3" aria-label="Donate now">
+                <HandHeart size={18} /> Donate
+              </Link>
+            </div>
             <button
               type="button"
-              className="rounded-md border border-[#d8e3ee] p-2.5 lg:hidden"
+              className="rounded-md border border-[#d8e3ee] p-2.5 lg:hidden transition-all active:scale-95 active:bg-[#edf3f8]"
               onClick={() => setOpen((prev) => !prev)}
               aria-label={open ? 'Close menu' : 'Open menu'}
               aria-expanded={open}
@@ -145,14 +165,14 @@ export default function Navbar() {
                     onClick={() => setOpen(false)}
                     className={`rounded-md px-3.5 py-3 text-[1rem] font-medium transition-colors ${
                       isActive(link.href)
-                        ? 'bg-[#edf3f8] text-[#17458F]'
-                        : 'text-[#1A1A1A] hover:bg-[#edf3f8]'
+                        ? 'bg-[#edf3f8] text-[#17458F] active:bg-[#dde9f3]'
+                        : 'text-[#1A1A1A] hover:bg-[#edf3f8] active:bg-[#edf3f8] active:text-[#17458F]'
                     }`}
                   >
                     {link.label}
                   </Link>
                 ))}
-                <Link href="/donate" onClick={() => setOpen(false)} className="btn-donate mt-2 !text-[1rem]">
+                <Link href="/donate" onClick={() => setOpen(false)} className="btn-donate mt-2 !text-[1rem] transition-transform active:scale-[0.98]">
                   <HandHeart size={18} /> Donate Now
                 </Link>
               </div>

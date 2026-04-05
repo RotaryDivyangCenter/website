@@ -131,7 +131,7 @@ export default function HomePage() {
               Rotary Divyang Center helps people walk and work again through free prosthetic services, long-term follow-up,
               and outreach camps across communities.
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-8 hidden sm:flex sm:flex-wrap gap-3">
               <Link href="/donate" className="btn-donate" aria-label="Donate for prosthetic support">
                 <HandHeart size={17} /> Donate Now
               </Link>
@@ -154,6 +154,12 @@ export default function HomePage() {
               />
             </div>
           </FadeUp>
+
+          <div className="sm:hidden">
+            <Link href="/donate" className="btn-donate" aria-label="Donate for prosthetic support">
+              <HandHeart size={17} /> Donate Now
+            </Link>
+          </div>
         </div>
       </section>
 
