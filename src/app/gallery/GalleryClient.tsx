@@ -23,12 +23,29 @@ function FadeUp({ children, delay = 0, className = '' }: { children: React.React
     );
 }
 
-const tabs = ['all', 'center', 'camps', 'events'];
+const tabs = ['all', 'camps'];
 const PREVIEW_IMAGE_COUNT = 20;
 
 type GalleryGridItem =
     | { kind: 'photo'; photo: GalleryPhoto; index: number }
     | { kind: 'show-more'; id: string };
+
+function isSupportedImageSrc(src: string): boolean {
+    const value = src.trim();
+    if (!value) return false;
+    if (value.startsWith('/api/gallery/image?id=')) return true;
+    if (/^https?:\/\//i.test(value)) return true;
+    // Drive file ID fallback support
+    if (/^[a-zA-Z0-9_-]{10,}$/.test(value)) return true;
+    return false;
+}
+
+function toCampGallerySrc(rawSrc: string): string {
+    const value = rawSrc.trim();
+    if (value.startsWith('/api/gallery/image?id=')) return value;
+    if (/^[a-zA-Z0-9_-]{10,}$/.test(value)) return `/api/gallery/image?id=${value}`;
+    return value;
+}
 
 function extractDriveId(src: string): string | null {
     const directMatch = src.match(/\/d\/([a-zA-Z0-9_-]+)/);
@@ -60,13 +77,29 @@ export default function GalleryClient({ photos }: { photos: GalleryPhoto[] }) {
     const [lightboxIndex, setLightboxIndex] = useState(-1);
     const [columnCount, setColumnCount] = useState(1);
     const [isExpanded, setIsExpanded] = useState(false);
+    const campPhotos = useMemo(() => {
+        return photos
+            // Camp-tab photos are injected server-side from camps sheet rows.
+            .filter((photo) => photo.id.startsWith('camp-') && isSupportedImageSrc(photo.src))
+            .map((photo) => ({
+                ...photo,
+                src: toCampGallerySrc(photo.src),
+            }));
+    }, [photos]);
 
     const filtered = useMemo(() => {
-        if (activeTab === 'all') {
+        if (activeTab === 'camps') {
+            return campPhotos ?? [];
+        }
+
+        if (campPhotos.length === 0) {
             return photos;
         }
-        return photos.filter((p) => p.tag === activeTab);
-    }, [activeTab, photos]);
+
+        const existing = new Set(photos.map((photo) => photo.src));
+        const mergedCampPhotos = campPhotos.filter((photo) => !existing.has(photo.src));
+        return [...photos, ...mergedCampPhotos];
+    }, [activeTab, campPhotos, photos]);
 
     const visiblePhotos = useMemo(() => {
         if (isExpanded) {
@@ -157,6 +190,11 @@ export default function GalleryClient({ photos }: { photos: GalleryPhoto[] }) {
 
             <section className="py-16" style={{ background: '#F7F4EF' }}>
                 <div className="max-w-300 mx-auto px-6">
+                    {activeTab === 'camps' && campPhotos.length === 0 && (
+                        <p className="mb-4 text-sm" style={{ color: '#5C6475' }}>
+                            No camp image links found yet in camps data.
+                        </p>
+                    )}
                     <AnimatePresence mode="popLayout">
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                             {masonryColumns.map((column, columnIndex) => (

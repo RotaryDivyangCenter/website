@@ -8,9 +8,9 @@ const IS_DEV = process.env.NODE_ENV === 'development';
 
 // Single source of truth for cache timings.
 // Edit only these values to change cache behavior across gallery/stats flows.
-const PROD_SERVERLESS_CACHE_SECONDS = 600; // 10 minutes
+const PROD_SERVERLESS_CACHE_SECONDS = 300; // 5 minutes
 const PROD_BROWSER_CACHE_SECONDS = 300; // 5 minutes
-const PROD_STALE_WHILE_REVALIDATE_SECONDS = 86400; // 24 hours
+const PROD_STALE_WHILE_REVALIDATE_SECONDS = 0; // disabled to avoid extended stale image/list responses
 
 export const CACHE_CONFIG = {
   isDev: IS_DEV,
@@ -25,6 +25,12 @@ export function getApiCacheHeaders(): Record<string, string> {
   if (CACHE_CONFIG.isDev) {
     return {
       'Cache-Control': 'no-store, max-age=0',
+    };
+  }
+
+  if (CACHE_CONFIG.staleWhileRevalidateSeconds <= 0) {
+    return {
+      'Cache-Control': `public, max-age=${CACHE_CONFIG.browserSeconds}, s-maxage=${CACHE_CONFIG.serverlessSeconds}, must-revalidate`,
     };
   }
 

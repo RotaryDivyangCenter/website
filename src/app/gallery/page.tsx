@@ -1,5 +1,6 @@
 import GalleryClient from './GalleryClient';
 import { getServerFetchOptions } from '@/config/cache';
+import { getCamps } from '@/utils/getCamps';
 
 export const dynamic = 'force-dynamic';
 
@@ -66,7 +67,8 @@ function seededShuffle<T>(items: T[], seed: string): T[] {
 function mapDrivePhotos(apiPhotos: ApiPhoto[]): GalleryPhoto[] {
     return apiPhotos.map((photo, index) => ({
         id: photo.id,
-        src: photo.url,
+        // Route every gallery image through our proxy for consistent loading.
+        src: `/api/gallery/image?id=${photo.id}`,
         alt: `Rotary gallery photo ${index + 1}`,
         caption: 'Rotary Divyang Center moments',
         tag: TAGS[index % TAGS.length],
@@ -106,8 +108,38 @@ async function getGalleryPhotos(): Promise<GalleryPhoto[]> {
     }
 }
 
-export default async function GalleryPage() {
-    const photos = await getGalleryPhotos();
+async function getCampTabPhotos(baseHeights: string[]): Promise<GalleryPhoto[]> {
+    try {
+        const camps = await getCamps();
+        const withImages = camps.filter((camp) => camp.image && camp.image.trim().length > 0);
 
-    return <GalleryClient photos={photos} />;
+        const uniqueBySrc = new Set<string>();
+        return withImages
+            .filter((camp) => {
+                const key = camp.image.trim();
+                if (uniqueBySrc.has(key)) return false;
+                uniqueBySrc.add(key);
+                return true;
+            })
+            .map((camp, index) => ({
+                id: `camp-${camp.id}-${index}`,
+                src: camp.image,
+                alt: `Camp in ${camp.location}`,
+                caption: camp.date ? `${camp.location} - ${camp.date}` : camp.location,
+                tag: 'camps',
+                h: baseHeights[index % baseHeights.length] ?? 'h-[260px]',
+            }));
+    } catch {
+        return [];
+    }
+}
+
+export default async function GalleryPage() {
+    const galleryPhotos = await getGalleryPhotos();
+    const campTabPhotos = await getCampTabPhotos(HEIGHTS);
+
+    // Keep all camp-sheet images for the Camps tab; duplicates (if any) reflect sheet rows.
+    const merged = [...galleryPhotos, ...campTabPhotos];
+
+    return <GalleryClient photos={merged} />;
 }
