@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import type { ReactNode } from 'react';
-import { HandHeart, Phone, Footprints, HeartPulse } from 'lucide-react';
+import { HandHeart, Phone, Footprints, HeartPulse, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -62,7 +62,6 @@ export default function DonatePage() {
                                     width={620}
                                     height={620}
                                     className="h-auto w-full select-none"
-                                    style={{ mixBlendMode: 'multiply', filter: 'contrast(1.08) saturate(1.05)' }}
                                     priority
                                 />
                             </div>
@@ -94,6 +93,12 @@ export default function DonatePage() {
                             </FadeUp>
                         ))}
                     </div>
+                    <FadeUp delay={0.2} className="mt-8 flex justify-center md:hidden">
+                        <div className="inline-flex items-center gap-1 rounded-full border border-[#d8e3ee] bg-[#f6f9fd] px-4 py-2 text-[12px] font-medium tracking-[0.04em] text-[#1B3A8C]">
+                            Scroll down to donate
+                            <ChevronDown size={14} />
+                        </div>
+                    </FadeUp>
                 </div>
             </section>
 
