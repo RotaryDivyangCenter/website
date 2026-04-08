@@ -15,6 +15,7 @@ import {
   HelpingHand,
   Calendar,
 } from 'lucide-react';
+import Skeleton from '../components/Skeleton';
 import { FALLBACK_STATS, type Stats } from '@/utils/getStats';
 
 function FadeUp({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
@@ -79,6 +80,7 @@ const csrPartners = [
 
 export default function HomePage() {
   const [stats, setStats] = useState<Stats>(FALLBACK_STATS);
+  const [isStatsLoading, setIsStatsLoading] = useState(true);
 
   useEffect(() => {
     let mounted = true;
@@ -96,6 +98,10 @@ export default function HomePage() {
         }
       } catch {
         // Keep fallback stats if API is unavailable.
+      } finally {
+        if (mounted) {
+          setIsStatsLoading(false);
+        }
       }
     };
 
@@ -232,12 +238,30 @@ export default function HomePage() {
           </FadeUp>
 
           <div className="mt-8 grid sm:grid-cols-2 md:grid-cols-3 gap-4">
-            <ImpactStat value={numericValue(stats.lives_supported)} suffix="+" label="Lives supported" />
-            <ImpactStat value={numericValue(stats.prosthetic_limbs)} suffix="+" label="Prosthetic limbs fitted" />
-            <ImpactStat value={numericValue(stats.camps)} suffix="+" label="Outreach camps conducted" />
-            <ImpactStat value={numericValue(stats.hours_per_week)} suffix="+" label="Hours per week" />
-            <ImpactStat value={numericValue(stats.years)} suffix="+" label="Years of service" />
-            <ImpactStat value={numericValue(stats.csr_partners)} suffix="" label="CSR and institutional partners" />
+            {isStatsLoading ? (
+              <>
+                {[0, 1, 2, 3, 4, 5].map((index) => (
+                  <div
+                    key={`impact-skeleton-${index}`}
+                    className="holo-card py-6 sm:py-8 px-6 h-full border border-border-soft bg-white"
+                  >
+                    <div className="flex flex-col items-center gap-3">
+                      <Skeleton className="h-10 w-20 rounded" />
+                      <Skeleton className="h-4 w-32 rounded" />
+                    </div>
+                  </div>
+                ))}
+              </>
+            ) : (
+              <>
+                <ImpactStat value={numericValue(stats.lives_supported)} suffix="+" label="Lives supported" />
+                <ImpactStat value={numericValue(stats.prosthetic_limbs)} suffix="+" label="Prosthetic limbs fitted" />
+                <ImpactStat value={numericValue(stats.camps)} suffix="+" label="Outreach camps conducted" />
+                <ImpactStat value={numericValue(stats.hours_per_week)} suffix="+" label="Hours per week" />
+                <ImpactStat value={numericValue(stats.years)} suffix="+" label="Years of service" />
+                <ImpactStat value={numericValue(stats.csr_partners)} suffix="" label="CSR and institutional partners" />
+              </>
+            )}
           </div>
         </div>
       </section>

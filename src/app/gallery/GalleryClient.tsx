@@ -5,6 +5,9 @@ import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import Lightbox from 'yet-another-react-lightbox';
 import 'yet-another-react-lightbox/styles.css';
+import Skeleton from '../../components/Skeleton';
+import type { CampRow } from '@/utils/getCamps';
+
 
 type GalleryPhoto = {
     id: string;
@@ -13,6 +16,11 @@ type GalleryPhoto = {
     caption: string;
     tag: string;
     h: string;
+};
+
+type ApiPhoto = {
+    id: string;
+    url: string;
 };
 
 function FadeUp({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) {
@@ -25,10 +33,87 @@ function FadeUp({ children, delay = 0, className = '' }: { children: React.React
 
 const tabs = ['all', 'camps'];
 const PREVIEW_IMAGE_COUNT = 20;
+const SEED = 'rotary-gallery';
+
+const HEIGHTS = ['h-[290px]', 'h-[220px]', 'h-[260px]', 'h-[330px]', 'h-[240px]', 'h-[300px]', 'h-[250px]', 'h-[310px]'];
+const TAGS = ['center', 'camps', 'events'];
+
+const fallbackPhotos: GalleryPhoto[] = [
+    { id: 'fallback-1', src: '/1.jpg', alt: 'Rotary Divyang Center Exterior', caption: 'Rotary Divyang Center, Kalyan', tag: 'center', h: 'h-[290px]' },
+    { id: 'fallback-2', src: '/2.jpg', alt: 'Inside the Center', caption: 'Inside the Prosthetics Unit', tag: 'center', h: 'h-[220px]' },
+    { id: 'fallback-3', src: '/3.jpg', alt: 'Center Building', caption: 'Center building and facilities', tag: 'center', h: 'h-[260px]' },
+    { id: 'fallback-4', src: '/4.jpg', alt: 'Prosthetic fitting session', caption: 'Prosthetic fitting session', tag: 'camps', h: 'h-[330px]' },
+    { id: 'fallback-5', src: '/1.jpg', alt: 'Camp at Kalyan', caption: 'Camp at Kalyan - March 2015', tag: 'camps', h: 'h-[240px]' },
+    { id: 'fallback-6', src: '/2.jpg', alt: 'Limb fitment camp', caption: 'LN4 Limb fitment camp', tag: 'camps', h: 'h-[300px]' },
+    { id: 'fallback-7', src: '/3.jpg', alt: 'Award ceremony', caption: 'Award ceremony 2024', tag: 'events', h: 'h-[250px]' },
+    { id: 'fallback-8', src: '/4.jpg', alt: '10 Years celebration', caption: '10 Years Celebration', tag: 'events', h: 'h-[310px]' },
+];
 
 type GalleryGridItem =
     | { kind: 'photo'; photo: GalleryPhoto; index: number }
     | { kind: 'show-more'; id: string };
+
+function hashString(value: string): number {
+    let hash = 2166136261;
+    for (let i = 0; i < value.length; i += 1) {
+        hash ^= value.charCodeAt(i);
+        hash = Math.imul(hash, 16777619);
+    }
+    return hash >>> 0;
+}
+
+function mulberry32(seed: number) {
+    return function random() {
+        let t = (seed += 0x6d2b79f5);
+        t = Math.imul(t ^ (t >>> 15), t | 1);
+        t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+}
+
+function seededShuffle<T>(items: T[], seed: string): T[] {
+    const array = [...items];
+    const random = mulberry32(hashString(seed));
+
+    for (let i = array.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+
+    return array;
+}
+
+function mapDrivePhotos(apiPhotos: ApiPhoto[]): GalleryPhoto[] {
+    return apiPhotos.map((photo, index) => ({
+        id: photo.id,
+        src: `/api/gallery/image?id=${photo.id}`,
+        alt: `Rotary gallery photo ${index + 1}`,
+        caption: 'Rotary Divyang Center moments',
+        tag: TAGS[index % TAGS.length],
+        h: HEIGHTS[index % HEIGHTS.length],
+    }));
+}
+
+function mapCampTabPhotos(camps: CampRow[], baseHeights: string[]): GalleryPhoto[] {
+    const withImages = camps.filter((camp) => camp.image && camp.image.trim().length > 0);
+
+    const uniqueBySrc = new Set<string>();
+    return withImages
+        .filter((camp) => {
+            const key = camp.image.trim();
+            if (uniqueBySrc.has(key)) return false;
+            uniqueBySrc.add(key);
+            return true;
+        })
+        .map((camp, index) => ({
+            id: `camp-${camp.id}-${index}`,
+            src: camp.image,
+            alt: `Camp in ${camp.location}`,
+            caption: camp.date ? `${camp.location} - ${camp.date}` : camp.location,
+            tag: 'camps',
+            h: baseHeights[index % baseHeights.length] ?? 'h-[260px]',
+        }));
+}
 
 function isSupportedImageSrc(src: string): boolean {
     const value = src.trim();
@@ -72,20 +157,97 @@ function toLightboxSrc(src: string): string {
     return `/api/gallery/image?id=${driveId}`;
 }
 
-export default function GalleryClient({ photos }: { photos: GalleryPhoto[] }) {
+export default function GalleryClient() {
+    const [photos, setPhotos] = useState<GalleryPhoto[]>([]);
+    const [campTabPhotos, setCampTabPhotos] = useState<GalleryPhoto[]>([]);
+    const [isGridLoading, setIsGridLoading] = useState(true);
+    const [isCampTabLoading, setIsCampTabLoading] = useState(false);
+    const [hasLoadedCampTab, setHasLoadedCampTab] = useState(false);
     const [activeTab, setActiveTab] = useState('all');
     const [lightboxIndex, setLightboxIndex] = useState(-1);
     const [columnCount, setColumnCount] = useState(1);
     const [isExpanded, setIsExpanded] = useState(false);
+
+    useEffect(() => {
+        let mounted = true;
+
+        const loadPhotos = async () => {
+            try {
+                const galleryResponse = await fetch('/api/gallery');
+
+                let galleryPhotos: GalleryPhoto[] = seededShuffle(fallbackPhotos, SEED);
+                if (galleryResponse.ok) {
+                    const data = (await galleryResponse.json()) as ApiPhoto[];
+                    if (Array.isArray(data) && data.length > 0) {
+                        galleryPhotos = mapDrivePhotos(seededShuffle(data, SEED));
+                    }
+                }
+
+                if (mounted) {
+                    setPhotos(galleryPhotos);
+                }
+            } catch {
+                if (mounted) {
+                    setPhotos(seededShuffle(fallbackPhotos, SEED));
+                }
+            } finally {
+                if (mounted) {
+                    setIsGridLoading(false);
+                }
+            }
+        };
+
+        void loadPhotos();
+
+        return () => {
+            mounted = false;
+        };
+    }, []);
+
+    useEffect(() => {
+        if (activeTab !== 'camps' || hasLoadedCampTab) {
+            return;
+        }
+
+        let mounted = true;
+
+        const loadCampTabPhotos = async () => {
+            setIsCampTabLoading(true);
+            try {
+                const campsResponse = await fetch('/api/camps');
+                if (!campsResponse.ok) {
+                    return;
+                }
+
+                const camps = (await campsResponse.json()) as CampRow[];
+                if (mounted && Array.isArray(camps) && camps.length > 0) {
+                    setCampTabPhotos(mapCampTabPhotos(camps, HEIGHTS));
+                }
+            } catch {
+                // Keep camps tab empty if request fails.
+            } finally {
+                if (mounted) {
+                    setHasLoadedCampTab(true);
+                    setIsCampTabLoading(false);
+                }
+            }
+        };
+
+        void loadCampTabPhotos();
+
+        return () => {
+            mounted = false;
+        };
+    }, [activeTab, hasLoadedCampTab]);
     const campPhotos = useMemo(() => {
-        return photos
+        return campTabPhotos
             // Camp-tab photos are injected server-side from camps sheet rows.
             .filter((photo) => photo.id.startsWith('camp-') && isSupportedImageSrc(photo.src))
             .map((photo) => ({
                 ...photo,
                 src: toCampGallerySrc(photo.src),
             }));
-    }, [photos]);
+    }, [campTabPhotos]);
 
     const filtered = useMemo(() => {
         if (activeTab === 'camps') {
@@ -190,17 +352,24 @@ export default function GalleryClient({ photos }: { photos: GalleryPhoto[] }) {
 
             <section className="py-16" style={{ background: '#F7F4EF' }}>
                 <div className="max-w-300 mx-auto px-6">
-                    {activeTab === 'camps' && campPhotos.length === 0 && (
+                    {!isGridLoading && !isCampTabLoading && activeTab === 'camps' && campPhotos.length === 0 && (
                         <p className="mb-4 text-sm" style={{ color: '#5C6475' }}>
                             No camp image links found yet in camps data.
                         </p>
                     )}
-                    <AnimatePresence mode="popLayout">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {masonryColumns.map((column, columnIndex) => (
-                                <div key={`column-${columnIndex}`} className="space-y-4">
-                                    {column.map((item) => (
-                                        item.kind === 'photo' ? (
+                    {isGridLoading || isCampTabLoading ? (
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                            {[0, 1, 2, 3, 4, 5].map((index) => (
+                                <Skeleton key={`gallery-skeleton-${index}`} className={`${HEIGHTS[index % HEIGHTS.length]} w-full`} />
+                            ))}
+                        </div>
+                    ) : (
+                        <AnimatePresence mode="popLayout">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                {masonryColumns.map((column, columnIndex) => (
+                                    <div key={`column-${columnIndex}`} className="space-y-4">
+                                        {column.map((item) => (
+                                            item.kind === 'photo' ? (
                                             <motion.div
                                                 key={item.photo.id}
                                                 initial={{ opacity: 0, scale: 0.96 }}
@@ -234,7 +403,7 @@ export default function GalleryClient({ photos }: { photos: GalleryPhoto[] }) {
                                                     <p className="text-white text-sm font-medium">{item.photo.caption}</p>
                                                 </div>
                                             </motion.div>
-                                        ) : (
+                                            ) : (
                                             <motion.button
                                                 key={item.id}
                                                 type="button"
@@ -278,12 +447,13 @@ export default function GalleryClient({ photos }: { photos: GalleryPhoto[] }) {
                                                     </span>
                                                 </div>
                                             </motion.button>
-                                        )
-                                    ))}
-                                </div>
-                            ))}
-                        </div>
-                    </AnimatePresence>
+                                            )
+                                        ))}
+                                    </div>
+                                ))}
+                            </div>
+                        </AnimatePresence>
+                    )}
                 </div>
             </section>
 
