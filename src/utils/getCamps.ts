@@ -100,7 +100,7 @@ async function getDriveImageNameToIdMap(): Promise<Map<string, string>> {
             params.set('pageToken', pageToken);
         }
 
-        const response = await fetch(`${DRIVE_API_URL}?${params.toString()}`, { cache: 'no-store' });
+        const response = await fetch(`${DRIVE_API_URL}?${params.toString()}`, getServerFetchOptions());
         if (!response.ok) break;
 
         const data = (await response.json()) as {

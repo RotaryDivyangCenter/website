@@ -10,7 +10,7 @@ const IS_DEV = process.env.NODE_ENV === 'development';
 // Edit only these values to change cache behavior across gallery/stats flows.
 const PROD_SERVERLESS_CACHE_SECONDS = 300; // 5 minutes
 const PROD_BROWSER_CACHE_SECONDS = 300; // 5 minutes
-const PROD_STALE_WHILE_REVALIDATE_SECONDS = 0; // disabled to avoid extended stale image/list responses
+const PROD_STALE_WHILE_REVALIDATE_SECONDS = 600; // serve stale quickly while refresh runs in background
 
 export const CACHE_CONFIG = {
   isDev: IS_DEV,
@@ -47,5 +47,16 @@ export function getServerFetchOptions(): NextFetchOptions {
   return {
     cache: 'force-cache',
     next: { revalidate: CACHE_CONFIG.serverlessSeconds },
+  };
+}
+
+export function withDevTimingHeaders(headers: Record<string, string>, startedAtMs: number): Record<string, string> {
+  if (!CACHE_CONFIG.isDev) {
+    return headers;
+  }
+
+  return {
+    ...headers,
+    'X-Response-Time-ms': String(Math.max(0, Date.now() - startedAtMs)),
   };
 }

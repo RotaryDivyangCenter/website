@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getApiCacheHeaders, getServerFetchOptions } from '@/config/cache';
+import { CACHE_CONFIG, getApiCacheHeaders, getServerFetchOptions, withDevTimingHeaders } from '@/config/cache';
 
 const DRIVE_API_URL = 'https://www.googleapis.com/drive/v3/files';
 
@@ -32,7 +32,26 @@ type DriveFile = {
     mimeType: string;
 };
 
+let galleryListCache:
+    | {
+          expiresAt: number;
+          images: Array<{ id: string; url: string }>;
+      }
+    | null = null;
+
+function withDevCacheHit(headers: Record<string, string>, value: 'HIT' | 'MISS' | 'BYPASS'): Record<string, string> {
+    if (!CACHE_CONFIG.isDev) {
+        return headers;
+    }
+
+    return {
+        ...headers,
+        'X-Cache-Hit': value,
+    };
+}
+
 export async function GET() {
+    const startedAtMs = Date.now();
     const folderId = extractDriveFolderId(process.env.GDRIVE_FOLDER_ID);
     const apiKey = process.env.GDRIVE_API_KEY;
 
@@ -45,11 +64,21 @@ export async function GET() {
 
     if (!folderId || !hasValidApiKey) {
         return NextResponse.json([], {
-            headers: {
+            headers: withDevTimingHeaders(withDevCacheHit({
                 ...cacheHeaders,
                 'Content-Type': 'application/json',
                 'X-Gallery-Warning': 'Missing Google Drive configuration.',
-            },
+            }, 'BYPASS'), startedAtMs),
+        });
+    }
+
+    const now = Date.now();
+    if (galleryListCache && galleryListCache.expiresAt > now) {
+        return NextResponse.json(galleryListCache.images, {
+            headers: withDevTimingHeaders(withDevCacheHit({
+                ...cacheHeaders,
+                'Content-Type': 'application/json',
+            }, 'HIT'), startedAtMs),
         });
     }
 
@@ -100,21 +129,28 @@ export async function GET() {
                 url: `https://lh3.googleusercontent.com/d/${file.id}=w1000`,
             }));
 
+        const memoryCacheSeconds = CACHE_CONFIG.isDev ? 30 : Math.max(1, CACHE_CONFIG.serverlessSeconds);
+
+        galleryListCache = {
+            expiresAt: now + memoryCacheSeconds * 1000,
+            images,
+        };
+
         return NextResponse.json(images, {
-            headers: {
+            headers: withDevTimingHeaders(withDevCacheHit({
                 ...cacheHeaders,
                 'Content-Type': 'application/json',
-            },
+            }, 'MISS'), startedAtMs),
         });
     } catch (error) {
         const message = error instanceof Error ? error.message : 'Unknown error';
 
         return NextResponse.json([], {
-            headers: {
+            headers: withDevTimingHeaders(withDevCacheHit({
                 ...cacheHeaders,
                 'Content-Type': 'application/json',
                 'X-Gallery-Warning': message,
-            },
+            }, 'MISS'), startedAtMs),
         });
     }
 }

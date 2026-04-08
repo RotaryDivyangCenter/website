@@ -1,12 +1,14 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import CountUp from 'react-countup';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Calendar, HandHeart, Users } from 'lucide-react';
-import type { Stats } from '@/utils/getStats';
+import Skeleton from '../../components/Skeleton';
+import { FALLBACK_STATS, type Stats } from '@/utils/getStats';
 import type { CampRow } from '@/utils/getCamps';
 
 function FadeUp({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) {
@@ -34,7 +36,59 @@ function numericValue(value: string) {
     return Number.isFinite(parsed) ? parsed : 0;
 }
 
-export default function CampsClient({ stats, campList }: { stats: Stats; campList: CampRow[] }) {
+export default function CampsClient() {
+    const [stats, setStats] = useState<Stats>(FALLBACK_STATS);
+    const [campList, setCampList] = useState<CampRow[]>([]);
+    const [isStatsLoading, setIsStatsLoading] = useState(true);
+    const [isCampsLoading, setIsCampsLoading] = useState(true);
+
+    useEffect(() => {
+        let mounted = true;
+
+        const loadStats = async () => {
+            try {
+                const response = await fetch('/api/stats');
+                if (!response.ok) return;
+
+                const data = (await response.json()) as Stats;
+                if (mounted) {
+                    setStats(data);
+                }
+            } catch {
+                // Keep fallback data.
+            } finally {
+                if (mounted) {
+                    setIsStatsLoading(false);
+                }
+            }
+        };
+
+        const loadCamps = async () => {
+            try {
+                const response = await fetch('/api/camps');
+                if (!response.ok) return;
+
+                const data = (await response.json()) as CampRow[];
+                if (mounted && Array.isArray(data)) {
+                    setCampList(data);
+                }
+            } catch {
+                // Keep empty list when fetch fails.
+            } finally {
+                if (mounted) {
+                    setIsCampsLoading(false);
+                }
+            }
+        };
+
+        void loadStats();
+        void loadCamps();
+
+        return () => {
+            mounted = false;
+        };
+    }, []);
+
     return (
         <div>
             {/* Hero */}
@@ -53,12 +107,23 @@ export default function CampsClient({ stats, campList }: { stats: Stats; campLis
             {/* Stats */}
             <section style={{ background: '#142d70' }} className="py-12">
                 <div className="max-w-[900px] mx-auto px-6">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                        <StatNum value={numericValue(stats.camps)} suffix="+" label="Camps Conducted" />
-                        <StatNum value={numericValue(stats.prosthetic_limbs)} suffix="+" label="Limbs Provided" />
-                        <StatNum value={numericValue(stats.years)} suffix="+" label="Years Active" />
-                        <StatNum value={numericValue(stats.csr_partners)} suffix="" label="CSR Partners" />
-                    </div>
+                    {isStatsLoading ? (
+                        <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
+                            {[0, 1, 2, 3].map((index) => (
+                                <div key={`stat-skeleton-${index}`} className="flex flex-col items-center gap-3 py-2">
+                                    <Skeleton className="h-10 w-20 rounded bg-[#2A4D96]!" />
+                                    <Skeleton className="h-3 w-24 rounded bg-[#345CA8]!" />
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+                            <StatNum value={numericValue(stats.camps)} suffix="+" label="Camps Conducted" />
+                            <StatNum value={numericValue(stats.prosthetic_limbs)} suffix="+" label="Limbs Provided" />
+                            <StatNum value={numericValue(stats.years)} suffix="+" label="Years Active" />
+                            <StatNum value={numericValue(stats.csr_partners)} suffix="" label="CSR Partners" />
+                        </div>
+                    )}
                 </div>
             </section>
 
@@ -73,7 +138,26 @@ export default function CampsClient({ stats, campList }: { stats: Stats; campLis
                         </p>
                     </FadeUp>
                     <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {campList.map((camp, i) => (
+                        {isCampsLoading &&
+                            [0, 1, 2, 3, 4, 5].map((index) => (
+                                <div key={`camp-skeleton-${index}`} className="holo-card p-8 h-full bg-[#fff] border border-[#E2DDD6] flex flex-col">
+                                    <Skeleton className="mb-6 h-[220px] w-full rounded-xl" />
+                                    <Skeleton className="mb-4 h-6 w-3/4 rounded" />
+                                    <div className="mb-6 flex-1 space-y-2">
+                                        <Skeleton className="h-4 w-2/3 rounded" />
+                                        <Skeleton className="h-4 w-1/2 rounded" />
+                                        <Skeleton className="h-4 w-3/5 rounded" />
+                                    </div>
+                                    <div className="mt-auto border-t border-[#E2DDD6] pt-4">
+                                        <div className="flex gap-2">
+                                            <Skeleton className="h-6 w-16 rounded" />
+                                            <Skeleton className="h-6 w-16 rounded" />
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+
+                        {!isCampsLoading && campList.map((camp, i) => (
                             <FadeUp key={camp.id} delay={(i % 3) * 0.08}>
                                 {(() => {
                                     const hasCampImage = Boolean(camp.image && camp.image.trim().length > 0);

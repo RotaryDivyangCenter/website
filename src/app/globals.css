@@ -233,6 +233,27 @@ a:hover {
   animation: fadeInUp 500ms ease both;
 }
 
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: #e8eef5;
+}
+
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, rgba(232, 238, 245, 0) 0%, rgba(255, 255, 255, 0.72) 50%, rgba(232, 238, 245, 0) 100%);
+  animation: skeletonShimmer 1.25s ease-in-out infinite;
+}
+
+@keyframes skeletonShimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
 @keyframes fadeInUp {
   from {
     opacity: 0;
