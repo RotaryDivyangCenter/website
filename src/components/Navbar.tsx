@@ -56,21 +56,21 @@ export default function Navbar() {
       >
         <div className="container-shell h-24 flex items-center justify-between gap-2 sm:gap-4">
           <Link href="/" className="flex flex-1 items-center gap-2 sm:gap-4 min-w-0" aria-label="Rotary Divyang Center home">
-            <div className="relative h-16 w-16 sm:h-16 sm:w-16 overflow-hidden rounded-full border border-[#d8e3ee]">
+            <div className="relative h-14 w-14 sm:h-16 sm:w-16 overflow-hidden rounded-full border border-[#d8e3ee]">
               <Image
                 src="/logo-circular.png"
                 alt="Rotary Divyang Center logo"
                 fill
-                sizes="(max-width: 640px) 64px, 64px"
+                sizes="(max-width: 640px) 56px, 64px"
                 className="object-cover"
                 priority
               />
             </div>
             <div className="block min-w-0">
-              <p className="text-[0.80rem] sm:text-[1.18rem] font-bold leading-tight text-[#17458F] font-[var(--font-jakarta)] whitespace-nowrap truncate">
+              <p className="text-[clamp(0.76rem,3.35vw,1.02rem)] sm:text-[1.18rem] font-bold leading-tight text-[#17458F] whitespace-nowrap">
                 Rotary Divyang Center
               </p>
-              <p className="text-[0.68rem] sm:text-[0.80rem] text-[#7C8A97] whitespace-nowrap truncate">Giving Hope, Giving Smile</p>
+              <p className="text-[clamp(0.60rem,2.6vw,0.82rem)] sm:text-[0.80rem] text-[#7C8A97] whitespace-nowrap">Giving Hope, Giving Smile</p>
             </div>
           </Link>
 
@@ -101,12 +101,12 @@ export default function Navbar() {
               aria-label="Visit Rotary Club of New Kalyan website"
               className="inline-block sm:hidden transition-transform active:scale-95"
             >
-              <span className="relative block h-18 w-32">
+              <span className="relative block h-[clamp(2.85rem,11vw,4.9rem)] w-[clamp(5.6rem,27vw,9.8rem)] min-h-[2.85rem] min-w-[5.6rem]">
                 <Image
                   src="/rcnewkalyan_no_bg.png"
                   alt="Rotary Club of New Kalyan logo"
                   fill
-                  sizes="96px"
+                  sizes="(max-width: 380px) 96px, 128px"
                   loading="eager"
                   className="object-contain"
                 />
