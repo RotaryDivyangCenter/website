@@ -1,12 +1,14 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { HandHeart, Mail, MapPin, Phone } from 'lucide-react';
+import { Globe, HandHeart, Mail, MapPin, Phone } from 'lucide-react';
 
 export default function Footer() {
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className="border-t" style={{ background: '#f6f9fc', borderColor: '#d8e3ee' }}>
-      <div className="container-shell py-14 grid gap-10 md:grid-cols-2 lg:grid-cols-4">
-        <div className="lg:col-span-1">
+      <div className="container-shell py-14 grid gap-10 md:grid-cols-2 lg:grid-cols-12 lg:gap-8">
+        <div className="lg:col-span-4">
           <div className="flex items-center gap-3 mb-4">
             <div className="relative h-12 w-12 rounded-full overflow-hidden border border-[#d8e3ee]">
               <Image src="/logo-circular.png" alt="Rotary Divyang Center" fill sizes="48px" className="object-cover" />
@@ -17,7 +19,7 @@ export default function Footer() {
             </div>
           </div>
           <p className="text-sm leading-relaxed text-[#5A5A5A]">
-            Restoring mobility and dignity through free prosthetic support, camps, and long-term rehabilitation assistance.
+            Restoring mobility and dignity through free prosthetics and orthotics support, camps, and long-term rehabilitation assistance.
           </p>
           <a
             href="https://rcnewkalyan.rotaryindia.org"
@@ -39,7 +41,7 @@ export default function Footer() {
           </a>
         </div>
 
-        <div>
+        <div className="lg:col-span-2">
           <h3 className="text-sm uppercase tracking-[0.14em] font-semibold mb-4 text-[#17458F]">Quick Links</h3>
           <ul className="space-y-2.5 text-sm text-[#5A5A5A]">
             {[
@@ -59,7 +61,7 @@ export default function Footer() {
           </ul>
         </div>
 
-        <div>
+        <div className="lg:col-span-3">
           <h3 className="text-sm uppercase tracking-[0.14em] font-semibold mb-4 text-[#17458F]">Contact</h3>
           <ul className="space-y-3 text-sm text-[#5A5A5A]">
             <li className="flex items-start gap-2.5">
@@ -81,10 +83,16 @@ export default function Footer() {
                 contact@rotarydivyangcenter.org
               </a>
             </li>
+            <li className="flex items-start gap-2.5">
+              <Globe size={16} className="mt-0.5 text-[#2CA7B0]" />
+              <a href="https://rotarydivyangcenter.org" target="_blank" rel="noreferrer" className="hover:text-[#17458F]">
+                rotarydivyangcenter.org
+              </a>
+            </li>
           </ul>
         </div>
 
-        <div>
+        <div className="lg:col-span-3">
           <h3 className="text-sm uppercase tracking-[0.14em] font-semibold mb-4 text-[#17458F]">CSR Partners</h3>
           <ul className="space-y-2 text-sm text-[#5A5A5A]">
             <li>Acutaas</li>
@@ -100,7 +108,7 @@ export default function Footer() {
 
       <div className="border-t" style={{ borderColor: '#d8e3ee' }}>
         <div className="container-shell py-4 text-[0.82rem] text-[#7C8A97] flex flex-col sm:flex-row items-center justify-between gap-2">
-          <p>© 2026 Rotary Divyang Center. All rights reserved.</p>
+          <p>© {currentYear} Rotary Divyang Center. All rights reserved.</p>
           <p>Built for accessibility and community impact.</p>
         </div>
       </div>
