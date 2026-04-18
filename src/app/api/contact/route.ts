@@ -134,21 +134,6 @@ export async function POST(req: NextRequest) {
       to: [CONTACT_RECEIVER_EMAIL],
       replyTo,
       subject: `New Contact Form Message from ${name}`,
-      text: [
-        'NEW CONTACT FORM MESSAGE',
-        '',
-        `Submitted By: ${name}`,
-        `Sender Email: ${email}`,
-        '',
-        'Message:',
-        message,
-        '',
-        '---',
-        'Rotary Divyang Center',
-        'Giving Hope, Giving Smile',
-        `Website: ${BRAND_SITE_URL}`,
-        'Address: Kalyan, Maharashtra, India',
-      ].join('\n'),
       html: buildContactEmailHtml(name, email, message),
     });
 

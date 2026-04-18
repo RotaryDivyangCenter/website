@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 export const SITE_URL = 'https://rotarydivyangcenter.org';
 export const SITE_NAME = 'Rotary Divyang Center';
-export const DEFAULT_OG_IMAGE = '/logo.jpg';
+export const DEFAULT_OG_IMAGE = '/4.jpg';
 
 type SeoInput = {
   title: string;
