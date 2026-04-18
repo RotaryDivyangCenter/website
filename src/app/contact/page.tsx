@@ -14,10 +14,37 @@ function FadeUp({ children, delay = 0, className = '' }: { children: React.React
 export default function ContactPage() {
     const [form, setForm] = useState({ name: '', email: '', message: '' });
     const [sent, setSent] = useState(false);
+    const [sending, setSending] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setSent(true);
+
+        setSending(true);
+        setError(null);
+
+        try {
+            const response = await fetch('/api/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(form),
+            });
+
+            if (!response.ok) {
+                const payload = (await response.json()) as { error?: string };
+                throw new Error(payload.error || 'Unable to send message right now.');
+            }
+
+            setSent(true);
+            setForm({ name: '', email: '', message: '' });
+        } catch (submitError) {
+            const message = submitError instanceof Error ? submitError.message : 'Unable to send message right now.';
+            setError(message);
+        } finally {
+            setSending(false);
+        }
     };
 
     return (
@@ -106,8 +133,8 @@ export default function ContactPage() {
                                         </div>
                                         <div>
                                             <p className="font-semibold text-[14px] mb-0.5" style={{ color: '#1A1A2E' }}>Email</p>
-                                            <a href="mailto:rcnewkalyan@gmail.com" className="text-[14px] hover:underline" style={{ color: '#2AA8C4' }}>
-                                                rcnewkalyan@gmail.com
+                                            <a href="mailto:contact@rotarydivyangcenter.org" className="text-[14px] hover:underline" style={{ color: '#2AA8C4' }}>
+                                                contact@rotarydivyangcenter.org
                                             </a>
                                         </div>
                                     </li>
@@ -189,9 +216,14 @@ export default function ContactPage() {
                                         onBlur={(e) => (e.target.style.border = '1.5px solid #E2DDD6')}
                                     />
                                 </div>
-                                <button type="submit" className="btn-primary w-full justify-center">
-                                    <Send size={16} /> Send Message
+                                <button type="submit" disabled={sending} className="btn-primary w-full justify-center disabled:opacity-70 disabled:cursor-not-allowed">
+                                    <Send size={16} /> {sending ? 'Sending...' : 'Send Message'}
                                 </button>
+                                {error ? (
+                                    <p className="text-sm text-center" style={{ color: '#B42318' }}>
+                                        {error}
+                                    </p>
+                                ) : null}
                             </form>
                         )}
                     </FadeUp>
