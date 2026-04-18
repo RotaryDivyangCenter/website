@@ -66,7 +66,7 @@ export default function ServicesPage() {
             <section className="py-20 text-center" style={{ background: '#1B3A8C' }}>
                 <FadeUp>
                     <p className="section-label mb-3" style={{ color: 'rgba(255,255,255,0.6)' }}>WHAT WE OFFER</p>
-                    <h1 className="text-[48px] font-bold text-white" style={{ fontFamily: "'Merriweather', serif" }}>Our Prosthetic Services</h1>
+                    <h1 className="text-[48px] font-bold text-white" style={{ fontFamily: "'Merriweather', serif" }}>Our Services</h1>
                     <p className="mt-4 text-[16px] max-w-xl mx-auto" style={{ color: 'rgba(255,255,255,0.75)' }}>
                         100% free prosthetic and orthotic solutions, from basic to advanced hi-tech*.
                     </p>
@@ -79,7 +79,7 @@ export default function ServicesPage() {
                     <FadeUp>
                         <h2 className="text-[28px] font-bold mb-4" style={{ color: '#1A1A2E' }}>Restoring Function. Restoring Dignity.</h2>
                         <p className="text-[16px] leading-[1.8]" style={{ color: '#5C6475' }}>
-                            At Rotary Divyang Center, our certified prosthetists assess each beneficiary individually to determine
+                            At Rotary Divyang Center, we assess each beneficiary individually to determine
                             the most suitable prosthetic solution. Whether basic or hi-tech*, every device is custom-fitted and
                             provided <strong style={{ color: '#5A9E3A' }}>100% free of charge</strong> to the recipient.
                         </p>

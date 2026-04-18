@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
+import { SITE_URL } from './seo';
 
 const inter = Inter({
   subsets: ["latin"],
@@ -19,9 +20,13 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Rotary Divyang Center",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: 'Rotary Divyang Center',
+    template: '%s | Rotary Divyang Center',
+  },
   description:
-    "Rotary Divyang Center provides free artificial limbs (prosthetics and orthotics) to people with disabilities across India. Run by Rotary Club of New Kalyan, Dist. 3142. Giving Hope, Giving Smile.",
+    'Rotary Divyang Center provides free prosthetics and orthotics support to people with disabilities across India. Run by Rotary Club of New Kalyan, Dist. 3142. Giving Hope, Giving Smile.',
   keywords: [
     "prosthetics",
     "orthotics",
@@ -30,12 +35,46 @@ export const metadata: Metadata = {
     "Rotary Club New Kalyan",
     "disability",
     "India outreach",
+    'Jaipur Foot',
+    'Divyang support',
   ],
+  alternates: {
+    canonical: '/',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+      'max-video-preview': -1,
+    },
+  },
   openGraph: {
-    title: "Rotary Divyang Center — Giving Hope, Giving Smile",
+    title: 'Rotary Divyang Center | Giving Hope, Giving Smile',
     description:
-      "Free prosthetic limbs for people with disabilities across India. An initiative of Rotary Club of New Kalyan.",
+      'Free prosthetics and orthotics support for people with disabilities across India. An initiative of Rotary Club of New Kalyan.',
+    url: SITE_URL,
+    siteName: 'Rotary Divyang Center',
+    locale: 'en_IN',
     type: "website",
+    images: [
+      {
+        url: '/logo.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Rotary Divyang Center',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Rotary Divyang Center | Giving Hope, Giving Smile',
+    description:
+      'Free prosthetics and orthotics support for people with disabilities across India.',
+    images: ['/logo.jpg'],
   },
 };
 
