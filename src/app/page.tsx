@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import LazyMap from '@/components/LazyMap';
 import { motion } from 'framer-motion';
 import CountUp from 'react-countup';
 import { useInView } from 'react-intersection-observer';
@@ -265,46 +266,46 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      
-            <section className="py-16 sm:py-20" style={{ background: '#F6F9FC' }}>
-              <div className="container-shell">
-                <FadeUp>
-                  <div className="mb-12 max-w-2xl sm:mb-16">
-                    <p className="section-label">How It Works</p>
-                    <h2 className="mt-4 text-[1.9rem] sm:text-[2.4rem] leading-tight font-bold text-[#17458F] font-[var(--font-jakarta)]">
-                      How to Get a Free Prosthetic Limb
-                    </h2>
-                    <p className="mt-4 text-[15px] leading-[1.75] text-[#5C6475]">
-                      The center is open every Saturday and Sunday from 10:00 AM to 1:00 PM.
-                    </p>
+
+      <section className="py-16 sm:py-20" style={{ background: '#F6F9FC' }}>
+        <div className="container-shell">
+          <FadeUp>
+            <div className="mb-12 max-w-2xl sm:mb-16">
+              <p className="section-label">How It Works</p>
+              <h2 className="mt-4 text-[1.9rem] sm:text-[2.4rem] leading-tight font-bold text-[#17458F] font-[var(--font-jakarta)]">
+                How to Get a Free Prosthetic Limb
+              </h2>
+              <p className="mt-4 text-[15px] leading-[1.75] text-[#5C6475]">
+                The center is open every Saturday and Sunday from 10:00 AM to 1:00 PM.
+              </p>
+            </div>
+          </FadeUp>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-8 sm:gap-y-10">
+            {[
+              { step: '01', title: 'Visit on Sat/Sun', desc: 'The patient visits the center during 10:00 AM to 1:00 PM on Saturday or Sunday.' },
+              { step: '02', title: 'Measurement at Center', desc: 'Our team records detailed limb measurements and clinical requirements the same day.' },
+              { step: '03', title: 'Return Next Week', desc: 'On the exact same day next week, the patient returns for the prepared custom limb.' },
+              { step: '04', title: 'No-Cost Fitment', desc: 'The customized limb is fitted and guided at zero cost to the patient.' },
+            ].map((item, i) => (
+              <FadeUp key={item.step} delay={i * 0.08}>
+                <div className="holo-card group relative h-full border border-[#d8e3ee] bg-white p-7 text-center transition-colors duration-300 hover:border-[#17458F] sm:p-8">
+                  <div
+                    className="mb-6 text-[48px] font-extrabold leading-none text-[rgba(27,58,140,0.12)] transition-colors duration-500 group-hover:text-[#17458F]"
+                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                  >
+                    {item.step}
                   </div>
-                </FadeUp>
+                  <h3 className="mb-3 text-[18px] font-bold text-[#1A1A2E]">{item.title}</h3>
+                  <p className="text-[15px] leading-[1.75] text-[#5C6475]">{item.desc}</p>
 
-                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-8 sm:gap-y-10">
-                  {[
-                    { step: '01', title: 'Visit on Sat/Sun', desc: 'The patient visits the center during 10:00 AM to 1:00 PM on Saturday or Sunday.' },
-                    { step: '02', title: 'Measurement at Center', desc: 'Our team records detailed limb measurements and clinical requirements the same day.' },
-                    { step: '03', title: 'Return Next Week', desc: 'On the exact same day next week, the patient returns for the prepared custom limb.' },
-                    { step: '04', title: 'No-Cost Fitment', desc: 'The customized limb is fitted and guided at zero cost to the patient.' },
-                  ].map((item, i) => (
-                    <FadeUp key={item.step} delay={i * 0.08}>
-                      <div className="holo-card group relative h-full border border-[#d8e3ee] bg-white p-7 text-center transition-colors duration-300 hover:border-[#17458F] sm:p-8">
-                        <div
-                          className="mb-6 text-[48px] font-extrabold leading-none text-[rgba(27,58,140,0.12)] transition-colors duration-500 group-hover:text-[#17458F]"
-                          style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                        >
-                          {item.step}
-                        </div>
-                        <h3 className="mb-3 text-[18px] font-bold text-[#1A1A2E]">{item.title}</h3>
-                        <p className="text-[15px] leading-[1.75] text-[#5C6475]">{item.desc}</p>
-
-                        {i < 3 && <div className="absolute -right-4 top-1/2 z-10 hidden h-[1px] w-8 bg-[#d8e3ee] lg:block" />}
-                      </div>
-                    </FadeUp>
-                  ))}
+                  {i < 3 && <div className="absolute -right-4 top-1/2 z-10 hidden h-[1px] w-8 bg-[#d8e3ee] lg:block" />}
                 </div>
-              </div>
-            </section>
+              </FadeUp>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <section className="py-16 sm:py-20 bg-white" id="partners">
         <div className="container-shell">
@@ -320,22 +321,20 @@ export default function HomePage() {
               <FadeUp key={partner.name}>
                 <div className="holo-card group border border-[#d8e3ee] bg-white px-4 py-5 text-center">
                   <div
-                    className={`h-14 flex items-center justify-center ${
-                      partner.name === 'Legrand' ? 'rounded-md group-hover:bg-[#FF0000] transition-colors duration-500' : ''
-                    }`}
+                    className={`h-14 flex items-center justify-center ${partner.name === 'Legrand' ? 'rounded-md group-hover:bg-[#FF0000] transition-colors duration-500' : ''
+                      }`}
                   >
                     <Image
                       src={partner.logo}
                       alt={`${partner.name} logo`}
                       width={130}
                       height={52}
-                      className={`max-h-12 w-auto object-contain transition duration-500 ${
-                        partner.name === 'Legrand'
+                      className={`max-h-12 w-auto object-contain transition duration-500 ${partner.name === 'Legrand'
                           ? 'brightness-0 opacity-60 group-hover:brightness-100 group-hover:opacity-100'
                           : partner.name === 'Century Rayon'
                             ? 'max-h-14 grayscale group-hover:grayscale-0'
                             : 'grayscale group-hover:grayscale-0'
-                      }`}
+                        }`}
                     />
                   </div>
                   <p className="mt-3 text-sm sm:text-base font-semibold tracking-wide text-[#7C8A97] transition-colors duration-300 group-hover:text-[#17458F]">
@@ -424,18 +423,7 @@ export default function HomePage() {
 
           <FadeUp delay={0.1}>
             <div>
-              <div className="overflow-hidden border border-[#d8e3ee] bg-[#edf3f8] min-h-[300px] sm:min-h-[380px]">
-                <iframe
-                  title="Rotary Divyang Center location"
-                  src="https://www.google.com/maps?q=Rotary+Divyang+Center,+64VH%2BCG+Kalyan,+Maharashtra&z=17&output=embed"
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0, minHeight: '380px' }}
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  allowFullScreen
-                />
-              </div>
+              <LazyMap />
               <div className="mt-4 flex flex-wrap gap-3">
                 <a
                   href="https://www.google.com/maps/dir/?api=1&destination=Rotary+Divyang+Center,+64VH%2BCG+Kalyan,+Maharashtra"
