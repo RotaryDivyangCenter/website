@@ -62,7 +62,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: '/4.jpg',
+        url: `${SITE_URL}/4.jpg`,
         width: 1200,
         height: 630,
         alt: 'Rotary Divyang Center prosthetic support at the center',
@@ -74,7 +74,10 @@ export const metadata: Metadata = {
     title: 'Rotary Divyang Center | Giving Hope, Giving Smile',
     description:
       'Free prosthetics and orthotics support for people with disabilities across India.',
-    images: ['/4.jpg'],
+    images: [`${SITE_URL}/4.jpg`],
+  },
+  other: {
+    'og:logo': `${SITE_URL}/logo.jpg`,
   },
 };
 
@@ -86,6 +89,63 @@ export default function RootLayout({
   return (
     <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
       <body className={`${inter.variable} ${jakarta.variable} font-[var(--font-inter)]`} suppressHydrationWarning>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': ['Organization', 'NonProfitOrganization', 'MedicalOrganization'],
+              name: 'Rotary Divyang Center',
+              alternateName: 'RDC',
+              url: SITE_URL,
+              logo: `${SITE_URL}/logo-circular.png`,
+              image: `${SITE_URL}/4.jpg`,
+              description:
+                'Free prosthetics and orthotics support for people with disabilities across India. An initiative of Rotary Club of New Kalyan, Dist. 3142.',
+              address: {
+                '@type': 'PostalAddress',
+                streetAddress: 'Sabnis Bungalow, Sahajanand Chowk, Opp. Katkar Hospital, Tilak Chowk',
+                addressLocality: 'Kalyan',
+                addressRegion: 'Maharashtra',
+                postalCode: '421301',
+                addressCountry: 'IN',
+              },
+              geo: {
+                '@type': 'GeoCoordinates',
+                latitude: 19.2436222,
+                longitude: 73.1288657,
+              },
+              telephone: '+919820562796',
+              email: 'contact@rotarydivyangcenter.org',
+              openingHoursSpecification: [
+                {
+                  '@type': 'OpeningHoursSpecification',
+                  dayOfWeek: ['Saturday', 'Sunday'],
+                  opens: '10:00',
+                  closes: '13:00',
+                },
+              ],
+              sameAs: ['https://rcnewkalyan.rotaryindia.org'],
+              parentOrganization: {
+                '@type': 'Organization',
+                name: 'Rotary Club of New Kalyan',
+                url: 'https://rcnewkalyan.rotaryindia.org',
+              },
+              foundingDate: '2019',
+              areaServed: {
+                '@type': 'Country',
+                name: 'India',
+              },
+              makesOffer: {
+                '@type': 'Offer',
+                name: 'Free Prosthetic and Orthotic Support',
+                price: '0',
+                priceCurrency: 'INR',
+                description: 'Free prosthetic limbs and orthotics for persons with disabilities.',
+              },
+            }),
+          }}
+        />
         <Navbar />
         <main id="main-content">{children}</main>
         <Footer />
