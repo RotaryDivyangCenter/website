@@ -11,7 +11,7 @@ export default function Footer() {
         <div className="lg:col-span-4">
           <div className="flex items-center gap-3 mb-4">
             <div className="relative h-12 w-12 rounded-full overflow-hidden border border-[#d8e3ee]">
-              <Image src="/logo-circular.png" alt="Rotary Divyang Center" fill sizes="48px" className="object-cover" />
+              <Image src="/logo-circular.webp" alt="Rotary Divyang Center" fill sizes="48px" className="object-cover" />
             </div>
             <div>
               <p className="font-bold text-[#17458F] font-[var(--font-jakarta)] text-[0.98rem]">Rotary Divyang Center</p>
@@ -30,7 +30,7 @@ export default function Footer() {
           >
             <span className="relative block h-14 w-44">
               <Image
-                src="/rcnewkalyan_no_bg.png"
+                src="/rcnewkalyan_no_bg.webp"
                 alt="Rotary Club of New Kalyan logo"
                 fill
                 sizes="176px"

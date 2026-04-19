@@ -12,15 +12,20 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(req: NextRequest) {
     const { searchParams } = req.nextUrl;
     const id = searchParams.get('id');
+    const requestedWidth = Number(searchParams.get('w'));
 
     if (!id || !/^[a-zA-Z0-9_-]+$/.test(id)) {
         return new NextResponse('Missing or invalid id', { status: 400 });
     }
 
+    const width = Number.isFinite(requestedWidth)
+        ? Math.min(1800, Math.max(320, Math.round(requestedWidth)))
+        : 1200;
+
     const upstreamCandidates = [
-        `https://lh3.googleusercontent.com/d/${id}=w2000`,
+        `https://lh3.googleusercontent.com/d/${id}=w${width}`,
         `https://lh3.googleusercontent.com/d/${id}`,
-        `https://drive.google.com/thumbnail?id=${id}&sz=w2000`,
+        `https://drive.google.com/thumbnail?id=${id}&sz=w${width}`,
         `https://drive.google.com/uc?export=view&id=${id}`,
     ];
 
@@ -48,8 +53,8 @@ export async function GET(req: NextRequest) {
                 status: 200,
                 headers: {
                     'Content-Type': contentType,
-                    // Keep image cache short so Drive updates reflect quickly.
-                    'Cache-Control': 'public, max-age=300, must-revalidate',
+                    // Keep client cache reasonably long for mobile repeat visits.
+                    'Cache-Control': 'public, max-age=86400, s-maxage=604800, stale-while-revalidate=86400',
                 },
             });
         }

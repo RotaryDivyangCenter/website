@@ -58,7 +58,7 @@ export default function Navbar() {
           <Link href="/" className="flex flex-1 items-center gap-2 sm:gap-4 min-w-0" aria-label="Rotary Divyang Center home">
             <div className="relative h-14 w-14 sm:h-16 sm:w-16 overflow-hidden rounded-full border border-[#d8e3ee]">
               <Image
-                src="/logo-circular.png"
+                src="/logo-circular.webp"
                 alt="Rotary Divyang Center logo"
                 fill
                 sizes="(max-width: 640px) 56px, 64px"
@@ -103,7 +103,7 @@ export default function Navbar() {
             >
               <span className="relative block h-[clamp(2.85rem,11vw,4.9rem)] w-[clamp(5.6rem,27vw,9.8rem)] min-h-[2.85rem] min-w-[5.6rem]">
                 <Image
-                  src="/rcnewkalyan_no_bg.png"
+                  src="/rcnewkalyan_no_bg.webp"
                   alt="Rotary Club of New Kalyan logo"
                   fill
                   sizes="(max-width: 380px) 96px, 128px"
@@ -121,7 +121,7 @@ export default function Navbar() {
             >
               <span className="relative block h-16 w-46">
                 <Image
-                  src="/rcnewkalyan_no_bg.png"
+                  src="/rcnewkalyan_no_bg.webp"
                   alt="Rotary Club of New Kalyan logo"
                   fill
                   sizes="112px"

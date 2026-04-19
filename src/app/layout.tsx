@@ -62,7 +62,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: `${SITE_URL}/4.jpg`,
+        url: `${SITE_URL}/4.webp`,
         width: 1200,
         height: 630,
         alt: 'Rotary Divyang Center prosthetic support at the center',
@@ -74,10 +74,10 @@ export const metadata: Metadata = {
     title: 'Rotary Divyang Center | Giving Hope, Giving Smile',
     description:
       'Free prosthetics and orthotics support for people with disabilities across India.',
-    images: [`${SITE_URL}/4.jpg`],
+    images: [`${SITE_URL}/4.webp`],
   },
   other: {
-    'og:logo': `${SITE_URL}/logo.jpg`,
+    'og:logo': `${SITE_URL}/logo.webp`,
   },
 };
 
@@ -98,8 +98,8 @@ export default function RootLayout({
               name: 'Rotary Divyang Center',
               alternateName: 'RDC',
               url: SITE_URL,
-              logo: `${SITE_URL}/logo-circular.png`,
-              image: `${SITE_URL}/4.jpg`,
+              logo: `${SITE_URL}/logo-circular.webp`,
+              image: `${SITE_URL}/4.webp`,
               description:
                 'Free prosthetics and orthotics support for people with disabilities across India. An initiative of Rotary Club of New Kalyan, Dist. 3142.',
               address: {

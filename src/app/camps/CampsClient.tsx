@@ -169,10 +169,11 @@ export default function CampsClient() {
                                                 style={{ height: '220px', background: '#F7F4EF' }}
                                             >
                                                 <Image
-                                                    src={hasCampImage ? camp.image : '/logo-circular.png'}
+                                                    src={hasCampImage ? camp.image : '/logo-circular.webp'}
                                                     alt={hasCampImage ? `Camp in ${camp.location}` : 'Rotary Divyang Center logo'}
                                                     fill
-                                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                                    sizes="(max-width: 640px) 92vw, (max-width: 1024px) 46vw, 30vw"
+                                                    quality={65}
                                                     className={hasCampImage
                                                         ? 'object-cover transition-transform duration-700 group-hover:scale-105'
                                                         : 'object-contain p-4 transition-transform duration-700 group-hover:scale-[1.02]'}

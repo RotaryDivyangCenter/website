@@ -57,12 +57,13 @@ export default function DonatePage() {
                         <FadeUp delay={0.15} className="flex justify-center md:justify-end">
                             <div className="relative w-full max-w-150">
                                 <Image
-                                    src="/donate_heart.png"
+                                    src="/donate_heart.webp"
                                     alt="Heart symbolizing the emotional bond between donors and patients"
                                     width={620}
                                     height={620}
                                     className="h-auto w-full select-none"
-                                    priority
+                                    sizes="(max-width: 768px) 92vw, 620px"
+                                    quality={62}
                                 />
                             </div>
                         </FadeUp>

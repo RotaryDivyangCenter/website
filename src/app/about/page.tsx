@@ -106,7 +106,7 @@ export default function AboutPage() {
                     <div className="grid lg:grid-cols-2 gap-12 items-center">
                         <FadeUp>
                             <div className="rounded-xl img-reveal-wrapper w-full">
-                                <Image src="/2.jpg" alt="Inside Rotary Divyang Center" width={800} height={600} className="object-cover w-full h-auto img-reveal" sizes="(max-width: 768px) 100vw, 50vw" />
+                                <Image src="/2.webp" alt="Inside Rotary Divyang Center" width={800} height={600} className="object-cover w-full h-auto img-reveal" sizes="(max-width: 768px) 100vw, 50vw" />
                             </div>
                         </FadeUp>
                         <FadeUp delay={0.1}>

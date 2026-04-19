@@ -13,7 +13,6 @@ const nextConfig: NextConfig = {
       },
       {
         pathname: '/api/gallery/image',
-        search: '?id=*',
       },
     ],
     remotePatterns: [

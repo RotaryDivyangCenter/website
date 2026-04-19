@@ -39,14 +39,14 @@ const HEIGHTS = ['h-[290px]', 'h-[220px]', 'h-[260px]', 'h-[330px]', 'h-[240px]'
 const TAGS = ['center', 'camps', 'events'];
 
 const fallbackPhotos: GalleryPhoto[] = [
-    { id: 'fallback-1', src: '/1.jpg', alt: 'Rotary Divyang Center Exterior', caption: 'Rotary Divyang Center, Kalyan', tag: 'center', h: 'h-[290px]' },
-    { id: 'fallback-2', src: '/2.jpg', alt: 'Inside the Center', caption: 'Inside the Prosthetics Unit', tag: 'center', h: 'h-[220px]' },
-    { id: 'fallback-3', src: '/3.jpg', alt: 'Center Building', caption: 'Center building and facilities', tag: 'center', h: 'h-[260px]' },
-    { id: 'fallback-4', src: '/4.jpg', alt: 'Prosthetic fitting session', caption: 'Prosthetic fitting session', tag: 'camps', h: 'h-[330px]' },
-    { id: 'fallback-5', src: '/1.jpg', alt: 'Camp at Kalyan', caption: 'Camp at Kalyan - March 2015', tag: 'camps', h: 'h-[240px]' },
-    { id: 'fallback-6', src: '/2.jpg', alt: 'Limb fitment camp', caption: 'LN4 Limb fitment camp', tag: 'camps', h: 'h-[300px]' },
-    { id: 'fallback-7', src: '/3.jpg', alt: 'Award ceremony', caption: 'Award ceremony 2024', tag: 'events', h: 'h-[250px]' },
-    { id: 'fallback-8', src: '/4.jpg', alt: '10 Years celebration', caption: '10 Years Celebration', tag: 'events', h: 'h-[310px]' },
+    { id: 'fallback-1', src: '/1.webp', alt: 'Rotary Divyang Center Exterior', caption: 'Rotary Divyang Center, Kalyan', tag: 'center', h: 'h-[290px]' },
+    { id: 'fallback-2', src: '/2.webp', alt: 'Inside the Center', caption: 'Inside the Prosthetics Unit', tag: 'center', h: 'h-[220px]' },
+    { id: 'fallback-3', src: '/3.webp', alt: 'Center Building', caption: 'Center building and facilities', tag: 'center', h: 'h-[260px]' },
+    { id: 'fallback-4', src: '/4.webp', alt: 'Prosthetic fitting session', caption: 'Prosthetic fitting session', tag: 'camps', h: 'h-[330px]' },
+    { id: 'fallback-5', src: '/1.webp', alt: 'Camp at Kalyan', caption: 'Camp at Kalyan - March 2015', tag: 'camps', h: 'h-[240px]' },
+    { id: 'fallback-6', src: '/2.webp', alt: 'Limb fitment camp', caption: 'LN4 Limb fitment camp', tag: 'camps', h: 'h-[300px]' },
+    { id: 'fallback-7', src: '/3.webp', alt: 'Award ceremony', caption: 'Award ceremony 2024', tag: 'events', h: 'h-[250px]' },
+    { id: 'fallback-8', src: '/4.webp', alt: '10 Years celebration', caption: '10 Years Celebration', tag: 'events', h: 'h-[310px]' },
 ];
 
 type GalleryGridItem =
@@ -86,7 +86,7 @@ function seededShuffle<T>(items: T[], seed: string): T[] {
 function mapDrivePhotos(apiPhotos: ApiPhoto[]): GalleryPhoto[] {
     return apiPhotos.map((photo, index) => ({
         id: photo.id,
-        src: `/api/gallery/image?id=${photo.id}`,
+        src: `/api/gallery/image?id=${photo.id}&w=1200`,
         alt: `Rotary gallery photo ${index + 1}`,
         caption: 'Rotary Divyang Center moments',
         tag: TAGS[index % TAGS.length],
@@ -128,7 +128,7 @@ function isSupportedImageSrc(src: string): boolean {
 function toCampGallerySrc(rawSrc: string): string {
     const value = rawSrc.trim();
     if (value.startsWith('/api/gallery/image?id=')) return value;
-    if (/^[a-zA-Z0-9_-]{10,}$/.test(value)) return `/api/gallery/image?id=${value}`;
+    if (/^[a-zA-Z0-9_-]{10,}$/.test(value)) return `/api/gallery/image?id=${value}&w=1200`;
     return value;
 }
 
@@ -154,7 +154,7 @@ function toLightboxSrc(src: string): string {
     // Route through our server-side proxy. The browser fetches from our
     // own server (no auth issues), our server fetches from lh3 (proven
     // to work). This also avoids the Next.js optimizer timeout on large images.
-    return `/api/gallery/image?id=${driveId}`;
+    return `/api/gallery/image?id=${driveId}&w=1800`;
 }
 
 export default function GalleryClient() {
@@ -393,7 +393,8 @@ export default function GalleryClient() {
                                                     alt={item.photo.alt}
                                                     fill
                                                     className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                                                    sizes="(max-width: 768px) 100vw, 33vw"
+                                                    sizes="(max-width: 640px) 92vw, (max-width: 1024px) 48vw, 32vw"
+                                                    quality={65}
                                                     loading={item.index < columnCount ? 'eager' : 'lazy'}
                                                 />
                                                 <div
@@ -422,7 +423,8 @@ export default function GalleryClient() {
                                                                 alt={previewPhoto.alt}
                                                                 fill
                                                                 className="object-cover blur-[1.5px] transition-transform duration-500 group-hover:scale-[1.03]"
-                                                                sizes="(max-width: 768px) 100vw, 33vw"
+                                                                sizes="(max-width: 640px) 45vw, (max-width: 1024px) 24vw, 16vw"
+                                                                quality={55}
                                                                 loading="lazy"
                                                             />
                                                         </div>

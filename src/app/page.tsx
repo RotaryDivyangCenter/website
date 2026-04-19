@@ -148,15 +148,17 @@ export default function HomePage() {
           <FadeUp delay={0.12}>
             <div className="rounded-2xl border border-[#d8e3ee] bg-white p-4 sm:p-5 shadow-[0_18px_40px_rgba(21,58,117,0.08)]">
               <div className="mb-3 flex items-center gap-2.5">
-                <Image src="/logo.jpg" alt="Rotary Divyang Center logo" width={36} height={36} className="rounded-full" />
+                <Image src="/logo.webp" alt="Rotary Divyang Center logo" width={36} height={36} className="rounded-full" />
                 <p className="text-sm font-semibold text-[#17458F]">Serving with dignity since 2019</p>
               </div>
               <Image
-                src="/4.jpg"
+                src="/4.webp"
                 alt="Prosthetic support activity"
                 width={900}
                 height={640}
                 className="h-auto w-full rounded-xl object-cover"
+                sizes="(max-width: 640px) 92vw, (max-width: 1024px) 88vw, 42vw"
+                quality={68}
                 priority
               />
             </div>
@@ -208,9 +210,13 @@ export default function HomePage() {
                     </div>
                     <h3 className="mt-4 text-[1.18rem] font-semibold text-[#1A1A1A]">{service.title}</h3>
                     <p className="mt-2 text-[#5A5A5A] leading-[1.7] text-[0.98rem]">{service.desc}</p>
-                    <Link href={service.href} className="group/learn mt-4 inline-flex items-center gap-1.5 font-semibold text-[#17458F]">
+                    <Link
+                      href={service.href}
+                      aria-label={`Learn more about ${service.title} prosthetic services`}
+                      className="group/learn mt-4 inline-flex items-center gap-1.5 font-semibold text-[#17458F]"
+                    >
                       <span className="relative">
-                        Learn more
+                        Learn more about {service.title}
                         <span className="absolute left-0 right-0 -bottom-0.5 h-[2px] origin-left scale-x-0 bg-[#17458F] transition-transform duration-300 group-hover/learn:scale-x-100" />
                       </span>
                       <ArrowRight size={15} />
@@ -329,6 +335,8 @@ export default function HomePage() {
                       alt={`${partner.name} logo`}
                       width={130}
                       height={52}
+                      sizes="(max-width: 768px) 30vw, 130px"
+                      quality={70}
                       className={`max-h-12 w-auto object-contain transition duration-500 ${partner.name === 'Legrand'
                           ? 'brightness-0 opacity-60 group-hover:brightness-100 group-hover:opacity-100'
                           : partner.name === 'Century Rayon'
