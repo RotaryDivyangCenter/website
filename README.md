@@ -8,7 +8,8 @@ This is the official Next.js website for Rotary Divyang Center, a non-profit ini
 
 - **Homepage:** Overview, impact stats, and quick links to all sections. (Statistics are fetched from Google Sheets.)
 - **About:** Mission, vision, history, and timeline of the center.
-- **Services:** Details of prosthetic limb and hand services, including hi-tech options.
+- **Services:** Details of prosthetic limb 
+and hand services, including hi-tech options.
 - **Camps:** Information about past and upcoming prosthetic camps. (Camp data is fetched from Google Sheets.)
 - **Gallery:** Photo gallery of center activities, camps, and events. (Photos are fetched dynamically from Google Drive.)
 - **Team:** Profiles of the core team and ambassadors.

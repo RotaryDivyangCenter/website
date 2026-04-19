@@ -13,11 +13,9 @@ function FadeUp({ children, delay = 0, className = '' }: { children: React.React
 
 const timeline = [
     { year: '2019', title: 'Center Founded', desc: 'Rotary Divyang Center established under Rotary Club of New Kalyan, Dist. 3142.' },
-    { year: '2016', title: 'First Major Camp', desc: 'First large-scale camp conducted — over 50 prosthetic limbs provided to beneficiaries.' },
-    { year: '2019', title: 'LN4 Hi-Tech Limbs', desc: 'Introduction of LN4 Jaipur Foot technology and hi-tech prosthetic hands in collaboration with international partners.' },
-    { year: '2022', title: '500+ Limbs Milestone', desc: 'Crossed the 500 prosthetic limbs milestone — a landmark moment for the center.' },
-    { year: '2024', title: '10 Years — 1000+ Lives', desc: 'Celebrated 10 years of service with over 1,000 lives transformed through free prosthetic limbs.' },
-    { year: '2025', title: 'Ongoing Expansion', desc: 'Expanding outreach to more regions across India with new camp partnerships and CSR support.' },
+    { year: '2019–Present', title: 'Ongoing Outreach', desc: 'Regular prosthetic fitment camps conducted in Kalyan and through camps.' },
+    { year: '2020s', title: 'CSR partnerships', desc: 'Support from CSR partners and donors enables free prosthetic limb distribution and expansion of services.' },
+    { year: '2024', title: '5-Year Milestone', desc: 'Celebrated 5 years of service, continuing to empower the differently-abled community.' },
 ];
 
 export default function AboutPage() {
