@@ -1,6 +1,29 @@
+
 # Rotary Divyang Center Website
 
-Next.js website for Rotary Divyang Center.
+This is the official Next.js website for Rotary Divyang Center, a non-profit initiative providing free prosthetic limbs and rehabilitation services in India.
+
+
+## Features
+
+- **Homepage:** Overview, impact stats, and quick links to all sections. (Statistics are fetched from Google Sheets.)
+- **About:** Mission, vision, history, and timeline of the center.
+- **Services:** Details of prosthetic limb and hand services, including hi-tech options.
+- **Camps:** Information about past and upcoming prosthetic camps. (Camp data is fetched from Google Sheets.)
+- **Gallery:** Photo gallery of center activities, camps, and events. (Photos are fetched dynamically from Google Drive.)
+- **Team:** Profiles of the core team and ambassadors.
+- **Partners:** List of CSR and outreach partners.
+- **Donate:** Secure online donation page for supporters.
+- **Contact:** Contact form and center details.
+- **Accessibility:** Responsive, mobile-first design for phones and PCs.
+- **SEO:** Sitemap, robots.txt, and Open Graph metadata for social sharing.
+
+### Technology
+- Built with Next.js App Router, React, and Tailwind CSS.
+- Uses modern image optimization (WebP, responsive sizes).
+- Framer Motion for smooth animations.
+- Lucide icons for a clean, modern look.
+
 
 ## Getting Started
 
@@ -9,28 +32,31 @@ npm install
 npm run dev
 ```
 
+
 Open http://localhost:3000.
 
-## Resend Setup
+
+
+## Email Setup
 
 The project supports:
-
 - Contact-form email delivery using Resend
+- Admin email sending via a secure web interface (no-code)
+
 
 Add these values to `.env`:
 
 ```env
 RESEND_API_KEY=re_xxxxxxxxx
-RESEND_WEBHOOK_SECRET=whsec_xxxxxxxxx
 OUTBOUND_ADMIN_TOKEN=choose-a-strong-random-token
 ```
 
-### Notes
 
-- `RESEND_API_KEY` is required.
+### Notes
+- `RESEND_API_KEY` is required for all email delivery.
 - Contact form email addresses are hardcoded in `src/app/api/contact/route.ts`.
-- `RESEND_WEBHOOK_SECRET` is required for inbound webhook signature verification.
-- `OUTBOUND_ADMIN_TOKEN` protects the admin outbound email API.
+- `OUTBOUND_ADMIN_TOKEN` is required for admin email access (see below).
+
 
 ## API Endpoints
 
@@ -42,81 +68,54 @@ Request body:
 
 ```json
 {
-	"name": "John Doe",
-	"email": "john@example.com",
-	"message": "Hello!"
+  "name": "John Doe",
+  "email": "john@example.com",
+  "message": "Hello!"
 }
 ```
 
-### Admin Outbound Email
+### Admin Email Access
 
-- `POST /api/admin/email`
-- Requires authenticated admin session cookie (set by login API)
+- Open `/admin/email` in your browser.
+- You will be redirected to `/admin/email/login`.
+- Enter the password (`OUTBOUND_ADMIN_TOKEN`) to access the admin email page.
+- Fill in recipients, subject, and message body.
+- Optional: edit From address, add Reply-To, upload attachments.
+- Click Send Email.
 
-Auth endpoints:
+This page is for non-technical users to send direct emails without API tools. All emails are sent using Resend and automatically include a Rotary signature block (logo, name, tagline, address, phone, email).
 
-- `POST /api/admin/auth/login` with `{ "password": "<OUTBOUND_ADMIN_TOKEN>" }`
-- `POST /api/admin/auth/logout`
+#### API (for advanced users)
+
+- `POST /api/admin/email` (requires authenticated admin session)
+- Auth endpoints:
+  - `POST /api/admin/auth/login` with `{ "password": "<OUTBOUND_ADMIN_TOKEN>" }`
+  - `POST /api/admin/auth/logout`
 
 Request body:
 
 ```json
 {
-	"from": "noreply@rotarydivyangcenter.org",
-	"to": "someone@example.com",
-	"subject": "Hello from Rotary Divyang Center",
-	"text": "Plain text body",
-	"html": "<p>HTML body</p>",
-	"replyTo": "",
-	"attachments": [
-		{
-			"filename": "notice.pdf",
-			"content": "<base64-string>",
-			"contentType": "application/pdf"
-		}
-	]
+  "from": "noreply@rotarydivyangcenter.org",
+  "to": "someone@example.com",
+  "subject": "Hello from Rotary Divyang Center",
+  "text": "Plain text body",
+  "html": "<p>HTML body</p>",
+  "replyTo": "",
+  "attachments": [
+    {
+      "filename": "notice.pdf",
+      "content": "<base64-string>",
+      "contentType": "application/pdf"
+    }
+  ]
 }
 ```
 
 `to` can be a single email string or an array of emails.
-
 `from` must use `@rotarydivyangcenter.org` domain.
 
-Every email sent via this admin API automatically appends a Rotary signature block (logo, name, tagline, address, phone, email).
 
-### No-Code Admin Email Page
+## Webhook Removal
 
-- Open `/admin/email` in your website.
-- You will be redirected to `/admin/email/login`.
-- Enter the password (`OUTBOUND_ADMIN_TOKEN`) to access the page.
-- Fill recipients, subject, and message body.
-- Optional: edit From address, add Reply-To, upload attachments.
-- Click Send Email.
-
-This page is for non-technical users to send direct emails without API tools.
-
-## Inbound Forwarding to Gmail (Resend Webhook)
-
-This project includes an inbound webhook endpoint:
-
-- `POST /api/resend/inbound`
-
-Route file:
-
-- `src/app/api/resend/inbound/route.ts`
-
-What it does:
-
-- Verifies Resend webhook signature using `RESEND_WEBHOOK_SECRET`
-- Handles `email.received`
-- Forwards the exact original inbound email to Gmail (`rcnewkalyan@gmail.com`) using Resend passthrough forwarding
-
-### Dashboard setup
-
-1. Deploy your app to Vercel.
-2. In Resend Dashboard, create a webhook endpoint:
-	- URL: `https://<your-domain>/api/resend/inbound`
-	- Event: `email.received`
-3. Copy the webhook signing secret (`whsec_...`) into `RESEND_WEBHOOK_SECRET`.
-4. Send a test email to your domain address (for example, `contact@rotarydivyangcenter.org`).
-5. Confirm forwarded notification arrives in Gmail.
+The Resend inbound webhook (`/api/resend/inbound`) and related forwarding to Gmail are no longer present in the codebase. All inbound email handling must be managed externally (e.g., via Resend dashboard or Gmail filters).
